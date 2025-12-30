@@ -6,10 +6,30 @@
 </head>
 
 <body style="margin:0; overflow:hidden;">
-  <button id="startBtn"
-    style="position:fixed;z-index:999;top:16px;left:16px;padding:10px 14px;border-radius:10px;">
-    Tap to Start
-  </button>
+
+  <!-- Overlay “tap anywhere” (nhẹ, đẹp, tự biến mất) -->
+  <div id="tapOverlay" style="
+    position:fixed; inset:0; z-index:999;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.35);
+    color:#fff; font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    text-align:center; padding:24px;
+  ">
+    <div style="
+      max-width:360px;
+      background:rgba(0,0,0,0.55);
+      border-radius:16px;
+      padding:16px 18px;
+      backdrop-filter: blur(6px);
+    ">
+      <div style="font-size:16px; font-weight:600; margin-bottom:6px;">
+        Tap anywhere to start
+      </div>
+      <div style="font-size:13px; opacity:0.9; line-height:1.35;">
+        Allow camera, then point to the poster.
+      </div>
+    </div>
+  </div>
 
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
@@ -19,6 +39,7 @@
     color-space="sRGB"
   >
     <a-assets>
+      <!-- đổi đúng tên file của anh ở đây -->
       <video
         id="overlayVideo"
         src="./assets/target.mp4"
@@ -33,26 +54,59 @@
 
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
-    <a-entity mindar-image-target="targetIndex: 0">
+    <a-entity id="target0" mindar-image-target="targetIndex: 0">
+      <!-- VIDEO VUÔNG: width = height. Nếu muốn 16:9 thì set height=0.56 -->
       <a-video
         src="#overlayVideo"
         position="0 0 0.1"
         width="1"
-        height="0.56"
-        rotation="0 0 0"
+        height="1"
       ></a-video>
     </a-entity>
   </a-scene>
 
   <script>
-    const btn = document.getElementById('startBtn');
+    const overlay = document.getElementById('tapOverlay');
     const vid = document.getElementById('overlayVideo');
+    const target = document.getElementById('target0');
 
-    btn.addEventListener('click', async () => {
+    let unlocked = false;
+    let targetVisible = false;
+
+    // 1) iOS unlock: chỉ cần 1 tap bất kỳ
+    async function unlockVideoOnce() {
+      if (unlocked) return;
+      try {
+        // Play rồi pause để "unlock" pipeline video trên iOS
+        await vid.play();
+        vid.pause();
+        unlocked = true;
+        overlay.style.display = 'none';
+
+        // Nếu lúc đó target đã thấy rồi thì play luôn
+        if (targetVisible) {
+          try { await vid.play(); } catch(e) {}
+        }
+      } catch (e) {
+        // Nếu fail, user tap lại lần nữa
+        console.log('Unlock blocked:', e);
+      }
+    }
+
+    overlay.addEventListener('click', unlockVideoOnce, { passive: true });
+    overlay.addEventListener('touchend', unlockVideoOnce, { passive: true });
+
+    // 2) Auto play/pause theo tracking
+    target.addEventListener('targetFound', async () => {
+      targetVisible = true;
+      if (!unlocked) return;
       try { await vid.play(); } catch (e) {}
-      btn.style.display = 'none';
+    });
+
+    target.addEventListener('targetLost', () => {
+      targetVisible = false;
+      try { vid.pause(); } catch (e) {}
     });
   </script>
 </body>
 </html>
-
