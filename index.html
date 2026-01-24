@@ -6,6 +6,7 @@
 </head>
 
 <body style="margin:0; overflow:hidden;">
+  <!-- Fallback / optional unlock button (still useful for iOS) -->
   <button id="startBtn"
     style="position:fixed;z-index:999;top:16px;left:16px;padding:10px 14px;border-radius:10px;">
     Tap to Start
@@ -19,6 +20,9 @@
     color-space="sRGB"
   >
     <a-assets>
+      <!-- Play button texture (add this file to ./assets/play.png) -->
+      <img id="playBtnTex" src="./assets/play.png" crossorigin="anonymous" />
+
       <!-- 11 videos (target 0 -> 10). Replace src paths as needed -->
       <video id="vid0"  src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid1"  src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
@@ -33,51 +37,79 @@
       <video id="vid10" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
     </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
+    <!-- Enable tap/click interaction on AR planes -->
+    <a-camera
+      position="0 0 0"
+      look-controls="enabled:false"
+      cursor="rayOrigin: mouse"
+      raycaster="objects: .playBtn"
+    ></a-camera>
 
-    <!-- 11 targets -->
-    <a-entity id="t0"  mindar-image-target="targetIndex: 0">
-      <a-video src="#vid0" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <!-- 11 targets with vertical video + Play Now button on target -->
+    <a-entity id="t0" mindar-image-target="targetIndex: 0">
+      <a-video id="vplane0" src="#vid0" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play0" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
-    <a-entity id="t1"  mindar-image-target="targetIndex: 1">
-      <a-video src="#vid1" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <a-entity id="t1" mindar-image-target="targetIndex: 1">
+      <a-video id="vplane1" src="#vid1" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play1" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
-    <a-entity id="t2"  mindar-image-target="targetIndex: 2">
-      <a-video src="#vid2" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <a-entity id="t2" mindar-image-target="targetIndex: 2">
+      <a-video id="vplane2" src="#vid2" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play2" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
-    <a-entity id="t3"  mindar-image-target="targetIndex: 3">
-      <a-video src="#vid3" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <a-entity id="t3" mindar-image-target="targetIndex: 3">
+      <a-video id="vplane3" src="#vid3" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play3" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
-    <a-entity id="t4"  mindar-image-target="targetIndex: 4">
-      <a-video src="#vid4" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <a-entity id="t4" mindar-image-target="targetIndex: 4">
+      <a-video id="vplane4" src="#vid4" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play4" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
-    <a-entity id="t5"  mindar-image-target="targetIndex: 5">
-      <a-video src="#vid5" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <a-entity id="t5" mindar-image-target="targetIndex: 5">
+      <a-video id="vplane5" src="#vid5" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play5" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
-    <a-entity id="t6"  mindar-image-target="targetIndex: 6">
-      <a-video src="#vid6" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <a-entity id="t6" mindar-image-target="targetIndex: 6">
+      <a-video id="vplane6" src="#vid6" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play6" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
-    <a-entity id="t7"  mindar-image-target="targetIndex: 7">
-      <a-video src="#vid7" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <a-entity id="t7" mindar-image-target="targetIndex: 7">
+      <a-video id="vplane7" src="#vid7" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play7" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
-    <a-entity id="t8"  mindar-image-target="targetIndex: 8">
-      <a-video src="#vid8" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <a-entity id="t8" mindar-image-target="targetIndex: 8">
+      <a-video id="vplane8" src="#vid8" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play8" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
-    <a-entity id="t9"  mindar-image-target="targetIndex: 9">
-      <a-video src="#vid9" position="0 0 0.1" width="1" height="0.56"></a-video>
+    <a-entity id="t9" mindar-image-target="targetIndex: 9">
+      <a-video id="vplane9" src="#vid9" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play9" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
     <a-entity id="t10" mindar-image-target="targetIndex: 10">
-      <a-video src="#vid10" position="0 0 0.1" width="1" height="0.56"></a-video>
+      <a-video id="vplane10" src="#vid10" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video>
+      <a-plane id="play10" class="playBtn" position="0 0 0.11" width="0.18" height="0.18"
+        material="src: #playBtnTex; transparent: true; shader: flat"></a-plane>
     </a-entity>
 
   </a-scene>
@@ -91,41 +123,65 @@
     // Grab all 11 target entities
     const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
 
+    // Grab all 11 play buttons (on target)
+    const playBtns = Array.from({ length: 11 }, (_, i) => document.getElementById(`play${i}`));
+
     let unlocked = false;
 
-    // 1) User gesture to unlock video playback (iOS)
-    btn.addEventListener('click', async () => {
+    async function unlockVideos() {
+      if (unlocked) return;
       unlocked = true;
 
-      // Try play+pause quickly to "unlock" all videos
+      // Try play+pause quickly to "unlock" all videos (iOS)
       for (const v of videos) {
         try {
           await v.play();
           v.pause();
           v.currentTime = 0;
         } catch (e) {
-          // ignore (some devices still block until targetFound)
+          // ignore
         }
       }
 
+      // Hide the fixed UI button once unlocked
       btn.style.display = 'none';
+    }
+
+    // Fallback: fixed button still unlocks videos if you want it
+    btn.addEventListener('click', async () => {
+      await unlockVideos();
     });
 
-    // 2) Play video only when its target is found
-    targets.forEach((targetEl, i) => {
+    // On-target "Play Now" buttons
+    playBtns.forEach((playBtn, i) => {
       const v = videos[i];
 
-      targetEl.addEventListener('targetFound', async () => {
-        if (!unlocked) return;
+      playBtn.addEventListener('click', async () => {
+        await unlockVideos();
+        playBtn.setAttribute('visible', false);
+
         try {
-          // restart or continue — choose one:
-          // v.currentTime = 0; // uncomment to restart every time
+          // Optional: restart each time user taps play
+          v.currentTime = 0;
           await v.play();
         } catch (e) {}
+      });
+    });
+
+    // Pause/Show button behavior by tracking events
+    targets.forEach((targetEl, i) => {
+      const v = videos[i];
+      const playBtn = playBtns[i];
+
+      targetEl.addEventListener('targetFound', async () => {
+        // Do nothing automatically — user must tap Play on target
+        // (This keeps iOS happy + user-controlled)
       });
 
       targetEl.addEventListener('targetLost', () => {
         try { v.pause(); } catch (e) {}
+        // Show play button again when target disappears
+        playBtn.setAttribute('visible', true);
       });
     });
   </script>
