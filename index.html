@@ -84,6 +84,12 @@
       <video id="vid8"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid9"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid10" src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+
+      <!-- Target 0 PNG sequence -->
+      <img id="t0_f0" src="./assets/t0-seq/frame_000.png" crossorigin="anonymous">
+      <img id="t0_f1" src="./assets/t0-seq/frame_001.png" crossorigin="anonymous">
+      <img id="t0_f2" src="./assets/t0-seq/frame_002.png" crossorigin="anonymous">
+      
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
@@ -94,6 +100,16 @@
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
       <a-video id="videoPlane0" src="#vid0" position="0 0 0.1" width="1" height="2"
                material="shader: flat" visible="false"></a-video>
+        <!-- PNG SEQUENCE PLANE -->
+  <a-image
+    id="t0_seqPlane"
+    src="#t0_f0"
+    position="0 0 0.10"
+    width="1"
+    height="2"
+    material="shader: flat; transparent: true; alphaTest: 0.01">
+  </a-image>
+
     </a-entity>
 
     <a-entity id="t1" mindar-image-target="targetIndex: 1">
@@ -243,6 +259,56 @@
         showThumb(i);
       });
     });
+
+/* ---------- TARGET 0 PNG SEQUENCE ---------- */
+
+const t0Frames = [
+  '#t0_f0',
+  '#t0_f1',
+  '#t0_f2',
+  '#t0_f3',
+  '#t0_f4',
+  '#t0_f5'
+];
+
+const t0SeqPlane = document.getElementById('t0_seqPlane');
+
+let t0FrameIndex = 0;
+let t0SeqTimer = null;
+const T0_FPS = 1; // change speed here (6–12 recommended)
+
+function startT0Sequence() {
+  if (t0SeqTimer) return;
+
+  t0SeqTimer = setInterval(() => {
+    t0FrameIndex = (t0FrameIndex + 1) % t0Frames.length;
+    t0SeqPlane.setAttribute('src', t0Frames[t0FrameIndex]);
+  }, 1000 / T0_FPS);
+}
+
+function stopT0Sequence() {
+  clearInterval(t0SeqTimer);
+  t0SeqTimer = null;
+  t0FrameIndex = 0;
+  t0SeqPlane.setAttribute('src', t0Frames[0]);
+}
+
+    function showThumb(i) {
+  thumbPlanes[i]?.setAttribute('visible', true);
+  videoPlanes[i]?.setAttribute('visible', false);
+
+  if (i === 0) startT0Sequence();
+}
+
+function showVideo(i) {
+  thumbPlanes[i]?.setAttribute('visible', false);
+  videoPlanes[i]?.setAttribute('visible', true);
+
+  if (i === 0) stopT0Sequence();
+}
+
+    
   </script>
 </body>
 </html>
+
