@@ -90,69 +90,77 @@
     <a-entity id="t10" mindar-image-target="targetIndex: 10"><a-video src="#vid10" position="0 0 0.1" width="0.56" height="1" material="shader: flat"></a-video></a-entity>
   </a-scene>
 
-  <script>
-    const btn = document.getElementById('startBtn');
+<script>
+  const btn = document.getElementById('startBtn');
 
-    const sceneEl = document.querySelector('a-scene');
-    const arSystem = sceneEl.systems['mindar-image-system'];
+  const sceneEl = document.querySelector('a-scene');
+  const arSystem = sceneEl.systems['mindar-image-system'];
 
-    const videos = Array.from({ length: 11 }, (_, i) => document.getElementById(`vid${i}`));
-    const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
+  const videos = Array.from({ length: 11 }, (_, i) =>
+    document.getElementById(`vid${i}`)
+  );
+  const targets = Array.from({ length: 11 }, (_, i) =>
+    document.getElementById(`t${i}`)
+  );
 
-    let unlocked = false;
-    let arStarted = false;
+  let unlocked = false;
+  let arStarted = false;
 
-    async function startARAndUnlock() {
-      if (unlocked) return;
-      unlocked = true;
+  async function startARAndUnlock() {
+    if (unlocked) return;
 
-      // 1) Start MindAR camera (iOS needs this on a user tap)
+    // 1️⃣ Try start AR camera
+    if (!arStarted) {
       try {
-        if (!arStarted) {
-          await arSystem.start();
-          arStarted = true;
-        }
+        await arSystem.start();
+        arStarted = true;
       } catch (e) {
-        unlocked = false;
-        alert('Camera blocked. Please allow Camera in iPhone Settings > Safari > Camera (Allow).');
-        console.error('MindAR start() failed:', e);
+        // ❌ DO NOTHING (no alert)
+        // iOS Safari may throw on first attempt even when camera is allowed
+        console.warn('MindAR start() retry needed', e);
         return;
       }
-
-      // 2) Unlock videos for iOS autoplay policy
-      for (const v of videos) {
-        try {
-          await v.play();
-          v.pause();
-          v.currentTime = 0;
-        } catch (e) {}
-      }
-
-      btn.style.display = 'none';
     }
 
-    btn.addEventListener('click', startARAndUnlock);
+    unlocked = true;
 
-    targets.forEach((targetEl, i) => {
-      const v = videos[i];
+    // 2️⃣ Unlock videos (iOS autoplay policy)
+    for (const v of videos) {
+      if (!v) continue;
+      try {
+        await v.play();
+        v.pause();
+        v.currentTime = 0;
+      } catch (e) {}
+    }
 
-      targetEl.addEventListener('targetFound', async () => {
-        if (!unlocked) return;
-        try {
-          v.currentTime = 0;
-          await v.play();
-        } catch (e) {}
-      });
+    btn.style.display = 'none';
+  }
 
-      targetEl.addEventListener('targetLost', () => {
-        try { v.pause(); } catch (e) {}
-      });
+  btn.addEventListener('click', startARAndUnlock);
+
+  targets.forEach((targetEl, i) => {
+    const v = videos[i];
+    if (!v) return;
+
+    targetEl.addEventListener('targetFound', async () => {
+      if (!unlocked) return;
+      try {
+        v.currentTime = 0;
+        await v.play();
+      } catch (e) {}
     });
 
-    // Optional: stop camera cleanly when leaving the page
-    window.addEventListener('pagehide', () => {
-      try { arSystem.stop(); } catch (e) {}
+    targetEl.addEventListener('targetLost', () => {
+      try { v.pause(); } catch (e) {}
     });
-  </script>
+  });
+
+  window.addEventListener('pagehide', () => {
+    try { arSystem.stop(); } catch (e) {}
+  });
+</script>
+
 </body>
 </html>
+
