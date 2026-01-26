@@ -3,37 +3,27 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- A-Frame + MindAR -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-  <!-- Start button styling -->
   <style>
     .start-btn {
       position: fixed;
       z-index: 9999;
-
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-
-      padding: 20px 32px;
+      padding: 20px 34px;
       border-radius: 18px;
       border: none;
-
       font-size: 20px;
       font-weight: 800;
       letter-spacing: 0.6px;
       text-transform: uppercase;
-
       color: #fff;
       background: linear-gradient(135deg, #ff7a18, #ff3d81);
-      box-shadow:
-        0 12px 36px rgba(0,0,0,0.35),
-        0 0 0 4px rgba(255,255,255,0.15);
-
+      box-shadow: 0 14px 40px rgba(0,0,0,0.4);
       cursor: pointer;
-
       animation: pulse 1.8s infinite;
     }
 
@@ -42,140 +32,15 @@
       50%  { transform: translate(-50%, -50%) scale(1.06); }
       100% { transform: translate(-50%, -50%) scale(1); }
     }
-
-    .start-btn:active {
-      transform: translate(-50%, -50%) scale(0.97);
-    }
   </style>
 </head>
 
 <body style="margin:0; overflow:hidden;">
 
-  <!-- iOS / AR unlock button -->
-  <button id="startBtn" class="start-btn">
-    TAP TO START AR
-  </button>
+<button id="startBtn" class="start-btn">TAP TO START AR</button>
 
-  <a-scene
-    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; maxTrack: 1;"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
-    renderer="colorManagement: true, physicallyCorrectLights"
-    color-space="sRGB"
-  >
-    <a-assets>
-      <!-- Thumbnails -->
-      <img id="thumb0"  src="./assets/Son-Thumb.png"  crossorigin="anonymous">
-      <img id="thumb1"  src="./assets/Bao-Thumb.png"  crossorigin="anonymous">
-      <img id="thumb2"  src="./assets/Tin-Thumb.png"  crossorigin="anonymous">
-      <img id="thumb3"  src="./assets/Dung-thumb.png" crossorigin="anonymous">
-      <img id="thumb4"  src="./assets/Duy-Thumb.png"  crossorigin="anonymous">
-      <img id="thumb5"  src="./assets/Dien-Thumbs.png" crossorigin="anonymous">
-      <img id="thumb6"  src="./assets/Minh-Thumb.png" crossorigin="anonymous">
-      <img id="thumb7"  src="./assets/Phong-Thumb.png" crossorigin="anonymous">
-      <img id="thumb8"  src="./assets/Kiet-Thumb.png" crossorigin="anonymous">
-      <img id="thumb9"  src="./assets/Van-Thumb.png"  crossorigin="anonymous">
-      <img id="thumb10" src="./assets/Xo-Thumb.png"   crossorigin="anonymous">
-
-      <!-- Videos -->
-      <video id="vid0"  src="./assets/phoma01.mp4" preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid1"  src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid2"  src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid3"  src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid4"  src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid5"  src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid6"  src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid7"  src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid8"  src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid9"  src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-      <video id="vid10" src="./assets/target.mp4"  preload="auto" autoplay loop muted playsinline webkit-playsinline></video>
-    </a-assets>
-
-    <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
-
-    <!-- TARGETS -->
-    <!-- Ratio 1:2 (width=1 height=2). Adjust if needed -->
-
-    <!-- Target 0 -->
-    <a-entity id="t0" mindar-image-target="targetIndex: 0">
-      <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.09" width="1" height="2"
-               material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
-      <a-video id="videoPlane0" src="#vid0" position="0 0 0.1" width="1" height="2"
-               material="shader: flat" visible="false"></a-video>
-    </a-entity>
-
-    <!-- Targets 1–10 (same pattern) -->
-    <!-- For brevity: structure unchanged, logic handled in JS -->
-    <!-- KEEP exactly as in your previous version -->
-
-  </a-scene>
-
-  <script>
-    const btn = document.getElementById('startBtn');
-
-    const videos  = Array.from({ length: 11 }, (_, i) => document.getElementById(`vid${i}`));
-    const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
-
-    const thumbPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`thumbPlane${i}`));
-    const videoPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`videoPlane${i}`));
-
-    let unlocked = false;
-
-    function showThumb(i) {
-      thumbPlanes[i].setAttribute('visible', true);
-      videoPlanes[i].setAttribute('visible', false);
-    }
-
-    function showVideo(i) {
-      thumbPlanes[i].setAttribute('visible', false);
-      videoPlanes[i].setAttribute('visible', true);
-    }
-
-    for (let i = 0; i < 11; i++) showThumb(i);
-
-    async function unlockVideos() {
-      if (unlocked) return;
-      unlocked = true;
-
-      for (const v of videos) {
-        try {
-          await v.play();
-          v.pause();
-          v.currentTime = 0;
-        } catch (e) {}
-      }
-
-      btn.style.display = 'none';
-    }
-
-    btn.addEventListener('click', unlockVideos);
-
-    targets.forEach((targetEl, i) => {
-      const v = videos[i];
-
-      v.addEventListener('playing', () => showVideo(i));
-      v.addEventListener('pause',   () => showThumb(i));
-      v.addEventListener('ended',   () => showThumb(i));
-
-      targetEl.addEventListener('targetFound', async () => {
-        if (!unlocked) return;
-
-        showThumb(i);
-        try {
-          v.currentTime = 0;
-          const p = v.play();
-          if (p && p.catch) p.catch(() => {});
-        } catch (e) {}
-      });
-
-      targetEl.addEventListener('targetLost', () => {
-        try {
-          v.pause();
-          v.currentTime = 0;
-        } catch (e) {}
-        showThumb(i);
-      });
-    });
-  </script>
-</body>
-</html>
+<a-scene
+  id="scene"
+  mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; maxTrack: 1;"
+  vr-mode-ui="enabled: false"
+  device-ori
