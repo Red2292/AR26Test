@@ -6,8 +6,6 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    body{margin:0; overflow:hidden;}
-
     #startBtn{
       position:fixed; z-index:9999;
       left:50%; bottom:24px; transform:translateX(-50%);
@@ -18,22 +16,22 @@
       cursor:pointer;
       -webkit-tap-highlight-color:transparent;
       transition:opacity 200ms ease, transform 120ms ease;
+      animation:pulse 1.8s infinite;
     }
-    #startBtn:active{transform:translateX(-50%) scale(.97);}
-    #startBtn[disabled]{opacity:.55; pointer-events:none;}
-
     @keyframes pulse{
       0%{transform:translateX(-50%) scale(1);}
       50%{transform:translateX(-50%) scale(1.06);}
       100%{transform:translateX(-50%) scale(1);}
     }
+    #startBtn:active{transform:translateX(-50%) scale(.97);}
+    #startBtn[disabled]{opacity:.55; pointer-events:none; animation:none;}
   </style>
 </head>
 
-<body>
+<body style="margin:0; overflow:hidden;">
 
   <!-- =======================
-       LOADING OVERLAY (OPTION B – FAKE)
+       LOADER OVERLAY (OPTION A)
        ======================= -->
   <div id="loader" style="
     position:fixed; inset:0; z-index:10000;
@@ -46,9 +44,7 @@
       </div>
 
       <div style="height:10px; background:rgba(255,255,255,.18); border-radius:999px; overflow:hidden;">
-        <div id="loaderBar"
-          style="height:100%; width:0%; background:linear-gradient(90deg,#ff7a18,#ff3d81);">
-        </div>
+        <div id="loaderBar" style="height:100%; width:0%; background:linear-gradient(90deg,#ff7a18,#ff3d81);"></div>
       </div>
 
       <div id="loaderText" style="margin-top:10px; font-size:13px; opacity:.9;">
@@ -57,7 +53,7 @@
     </div>
   </div>
 
-  <!-- START BUTTON -->
+  <!-- Start button (enabled only after preload finished) -->
   <button id="startBtn" type="button" disabled>Loading…</button>
 
   <a-scene
@@ -68,207 +64,296 @@
   >
     <a-assets>
       <!-- thumbs -->
-      <img id="thumb0" src="./assets/Son-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb1" src="./assets/Bao-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb2" src="./assets/Dien-Thumbs.png" crossorigin="anonymous" />
-      <img id="thumb3" src="./assets/Dung-thumb.png" crossorigin="anonymous" />
-      <img id="thumb4" src="./assets/Duy-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb5" src="./assets/Kiet-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb6" src="./assets/Minh-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb7" src="./assets/Phong-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb8" src="./assets/Tin-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb9" src="./assets/Van-Thumb.png" crossorigin="anonymous" />
+      <img id="thumb0"  src="./assets/Son-Thumb.png" crossorigin="anonymous" />
+      <img id="thumb1"  src="./assets/Bao-Thumb.png" crossorigin="anonymous" />
+      <img id="thumb2"  src="./assets/Dien-Thumbs.png" crossorigin="anonymous" />
+      <img id="thumb3"  src="./assets/Dung-thumb.png" crossorigin="anonymous" />
+      <img id="thumb4"  src="./assets/Duy-Thumb.png" crossorigin="anonymous" />
+      <img id="thumb5"  src="./assets/Kiet-Thumb.png" crossorigin="anonymous" />
+      <img id="thumb6"  src="./assets/Minh-Thumb.png" crossorigin="anonymous" />
+      <img id="thumb7"  src="./assets/Phong-Thumb.png" crossorigin="anonymous" />
+      <img id="thumb8"  src="./assets/Tin-Thumb.png" crossorigin="anonymous" />
+      <img id="thumb9"  src="./assets/Van-Thumb.png" crossorigin="anonymous" />
       <img id="thumb10" src="./assets/Xo-Thumb.png" crossorigin="anonymous" />
 
       <!-- videos -->
-      <video id="vid0" src="./assets/phoma01.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid1" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid2" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid3" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid4" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid5" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid6" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid7" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid8" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid9" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid10" src="./assets/target.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid0"  src="./assets/phoma01.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid1"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid2"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid3"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid4"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid5"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid6"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid7"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid8"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid9"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid10" src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+
+      <!-- ===== Sequences used for TARGET 0 layers ===== -->
+
+      <!-- t1-seq (2 frames) -->
+      <img id="t1_f0" src="./assets/t1-seq/frame_000.png" crossorigin="anonymous" />
+      <img id="t1_f1" src="./assets/t1-seq/frame_001.png" crossorigin="anonymous" />
+
+      <!-- t2-seq (2 frames) -->
+      <img id="t2_f0" src="./assets/t2-seq/frame_000.png" crossorigin="anonymous" />
+      <img id="t2_f1" src="./assets/t2-seq/frame_001.png" crossorigin="anonymous" />
+
+      <!-- t3-seq (3 frames) -->
+      <img id="t3_f0" src="./assets/t3-seq/frame_000.png" crossorigin="anonymous" />
+      <img id="t3_f1" src="./assets/t3-seq/frame_001.png" crossorigin="anonymous" />
+      <img id="t3_f2" src="./assets/t3-seq/frame_002.png" crossorigin="anonymous" />
+
+      <!-- t4-seq (2 frames) -->
+      <img id="t4_f0" src="./assets/t4-seq/frame_000.png" crossorigin="anonymous" />
+      <img id="t4_f1" src="./assets/t4-seq/frame_001.png" crossorigin="anonymous" />
+
+      <!-- t5-seq (2 frames) -->
+      <img id="t5_f0" src="./assets/t5-seq/frame_000.png" crossorigin="anonymous" />
+      <img id="t5_f1" src="./assets/t5-seq/frame_001.png" crossorigin="anonymous" />
+
+      <!-- t6-seq (2 frames) -->
+      <img id="t6_f0" src="./assets/t6-seq/frame_000.png" crossorigin="anonymous" />
+      <img id="t6_f1" src="./assets/t6-seq/frame_001.png" crossorigin="anonymous" />
+
+      <!-- t0-seq (3 frames) -->
+      <img id="t0_f0" src="./assets/t0-seq/frame_000.png" crossorigin="anonymous" />
+      <img id="t0_f1" src="./assets/t0-seq/frame_001.png" crossorigin="anonymous" />
+      <img id="t0_f2" src="./assets/t0-seq/frame_002.png" crossorigin="anonymous" />
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
-    <!-- TARGETS 0–10 -->
-    <a-entity id="t0" mindar-image-target="targetIndex:0">
-      <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
-      <a-video id="videoPlane0" src="#vid0" position="0 0 0.1" width="1" height="2"
-        material="shader:flat" visible="false"></a-video>
+    <!-- =======================
+         TARGET 0 (thumb + 7 seq layers)
+         ======================= -->
+    <a-entity id="t0" mindar-image-target="targetIndex: 0">
+      <!-- base thumb -->
+      <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.090" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
+
+      <!-- layer A: t1 (2f) -->
+      <a-image id="seqPlane0_a" src="#t1_f0" position="0 0 0.094" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
+
+      <!-- layer B: t2 (2f) -->
+      <a-image id="seqPlane0_b" src="#t2_f0" position="0 0 0.2" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
+
+      <!-- layer E: t5 (2f) -->
+      <a-image id="seqPlane0_e" src="#t5_f0" position="0 0 0.3" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
+
+      <!-- layer C: t3 (3f) -->
+      <a-image id="seqPlane0_c" src="#t3_f0" position="0 0 0.4" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
+
+      <!-- layer G: t6 (2f) -->
+      <a-image id="seqPlane0_g" src="#t6_f0" position="0 0 0.55" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
+
+      <!-- layer F: t0 (3f) -->
+      <a-image id="seqPlane0_f" src="#t0_f0" position="0 0 0.7" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
+
+      <!-- layer D: t4 (2f) -->
+      <a-image id="seqPlane0_d" src="#t4_f0" position="0 0 1" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
     </a-entity>
 
-    <!-- Auto-generate the rest similarly (kept explicit for clarity) -->
-    <a-entity id="t1" mindar-image-target="targetIndex:1">
+    <!-- =======================
+         TARGETS 1..10 (thumb + video)
+         ======================= -->
+    <a-entity id="t1" mindar-image-target="targetIndex: 1">
       <a-image id="thumbPlane1" src="#thumb1" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane1" src="#vid1" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
 
-    <a-entity id="t2" mindar-image-target="targetIndex:2">
+    <a-entity id="t2" mindar-image-target="targetIndex: 2">
       <a-image id="thumbPlane2" src="#thumb2" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane2" src="#vid2" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
 
-    <a-entity id="t3" mindar-image-target="targetIndex:3">
+    <a-entity id="t3" mindar-image-target="targetIndex: 3">
       <a-image id="thumbPlane3" src="#thumb3" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane3" src="#vid3" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
 
-    <a-entity id="t4" mindar-image-target="targetIndex:4">
+    <a-entity id="t4" mindar-image-target="targetIndex: 4">
       <a-image id="thumbPlane4" src="#thumb4" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane4" src="#vid4" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
 
-    <a-entity id="t5" mindar-image-target="targetIndex:5">
+    <a-entity id="t5" mindar-image-target="targetIndex: 5">
       <a-image id="thumbPlane5" src="#thumb5" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane5" src="#vid5" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
 
-    <a-entity id="t6" mindar-image-target="targetIndex:6">
+    <a-entity id="t6" mindar-image-target="targetIndex: 6">
       <a-image id="thumbPlane6" src="#thumb6" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane6" src="#vid6" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
 
-    <a-entity id="t7" mindar-image-target="targetIndex:7">
+    <a-entity id="t7" mindar-image-target="targetIndex: 7">
       <a-image id="thumbPlane7" src="#thumb7" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane7" src="#vid7" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
 
-    <a-entity id="t8" mindar-image-target="targetIndex:8">
+    <a-entity id="t8" mindar-image-target="targetIndex: 8">
       <a-image id="thumbPlane8" src="#thumb8" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane8" src="#vid8" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
 
-    <a-entity id="t9" mindar-image-target="targetIndex:9">
+    <a-entity id="t9" mindar-image-target="targetIndex: 9">
       <a-image id="thumbPlane9" src="#thumb9" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane9" src="#vid9" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
 
-    <a-entity id="t10" mindar-image-target="targetIndex:10">
+    <a-entity id="t10" mindar-image-target="targetIndex: 10">
       <a-image id="thumbPlane10" src="#thumb10" position="0 0 0.09" width="1" height="2"
-        material="shader:flat; transparent:true"></a-image>
+        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
       <a-video id="videoPlane10" src="#vid10" position="0 0 0.1" width="1" height="2"
         material="shader:flat" visible="false"></a-video>
     </a-entity>
+
   </a-scene>
 
   <script>
+    const btn = document.getElementById('startBtn');
+
     /* =======================
-       FAKE LOADING (OPTION B)
+       OPTION A LOADER (REAL-ISH)
+       - videos: byte-progress (needs Content-Length)
+       - images: count-progress
        ======================= */
     const loader = document.getElementById('loader');
     const loaderBar = document.getElementById('loaderBar');
     const loaderText = document.getElementById('loaderText');
-    const btn = document.getElementById('startBtn');
 
-    let fakePct = 0;
-    let fakeTimer = null;
-    let unlocked = false;
-
-    function setFakeProgress(p){
-      const v = Math.min(100, Math.max(0, p));
-      loaderBar.style.width = v.toFixed(0) + '%';
-      loaderText.textContent = v.toFixed(0) + '%';
+    function setProgress(pct) {
+      const p = Math.max(0, Math.min(100, pct));
+      if (loaderBar) loaderBar.style.width = p.toFixed(0) + '%';
+      if (loaderText) loaderText.textContent = p.toFixed(0) + '%';
     }
 
-    function startFakeLoader(){
-      fakeTimer = setInterval(()=>{
-        if(fakePct >= 92) return;
-        fakePct += Math.max(0.25, (92 - fakePct) * 0.04);
-        setFakeProgress(fakePct);
-      }, 50);
-
-      setTimeout(()=>{
-        btn.disabled = false;
-        btn.textContent = "Tap to Start";
-        btn.style.animation = "pulse 1.8s infinite";
-      }, 900);
-    }
-
-    function finishFakeLoader(){
-      setFakeProgress(100);
-      clearInterval(fakeTimer);
+    function hideLoader() {
+      if (!loader) return;
       loader.style.transition = "opacity 250ms ease";
       loader.style.opacity = "0";
-      setTimeout(()=>loader.remove(),260);
+      setTimeout(() => {
+        if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+      }, 260);
     }
 
-    startFakeLoader();
-
-    /* =======================
-       VIDEO UNLOCK + VISIBILITY
-       ======================= */
-    const videos = [...Array(11)].map((_,i)=>document.getElementById(`vid${i}`));
-    const thumbs = [...Array(11)].map((_,i)=>document.getElementById(`thumbPlane${i}`));
-    const vplanes = [...Array(11)].map((_,i)=>document.getElementById(`videoPlane${i}`));
-    const targets = [...Array(11)].map((_,i)=>document.getElementById(`t${i}`));
-
-    function showThumb(i){
-      thumbs[i].setAttribute('visible',true);
-      vplanes[i].setAttribute('visible',false);
-    }
-    function showVideo(i){
-      thumbs[i].setAttribute('visible',false);
-      vplanes[i].setAttribute('visible',true);
+    function enableStart() {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+      btn.textContent = "Tap to Start";
     }
 
-    async function unlockVideos(){
-      finishFakeLoader();
-      if(unlocked) return;
-      unlocked = true;
+    function preloadImagesByCount(urls, onProgress) {
+      let loaded = 0;
+      const total = urls.length || 1;
 
-      for(const v of videos){
-        try{
-          await v.play(); v.pause(); v.currentTime = 0;
-        }catch(e){}
+      return new Promise((resolve) => {
+        if (!urls.length) return resolve();
+
+        urls.forEach((url) => {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = img.onerror = () => {
+            loaded++;
+            onProgress(loaded / total);
+            if (loaded >= total) resolve();
+          };
+          img.src = url;
+        });
+      });
+    }
+
+    async function fetchWithProgress(url, onProgress) {
+      const res = await fetch(url, { cache: "force-cache" });
+      if (!res.ok) throw new Error(`Failed: ${url}`);
+
+      const len = Number(res.headers.get('content-length')) || 0;
+      if (!res.body || !len) {
+        await res.blob(); // can't compute byte % without length
+        onProgress(1);
+        return;
       }
 
-      btn.style.opacity = '0';
-      btn.style.pointerEvents = 'none';
-      setTimeout(()=>btn.remove(),220);
+      const reader = res.body.getReader();
+      let received = 0;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        received += value.byteLength;
+        onProgress(received / len);
+      }
     }
 
-    btn.addEventListener('click', unlockVideos, { once:true });
+    function collectAssetUrls() {
+      const assets = document.querySelector('a-assets');
+      if (!assets) return { imageUrls: [], videoUrls: [], mindUrls: [] };
 
-    targets.forEach((t,i)=>{
-      const v = videos[i];
-      t.addEventListener('targetFound',()=>{
-        if(!unlocked) return;
-        showThumb(i);
-        v.currentTime = 0;
-        v.play().catch(()=>{});
-      });
-      t.addEventListener('targetLost',()=>{
-        v.pause();
-        v.currentTime = 0;
-        showThumb(i);
-      });
-    });
-  </script>
+      const imageUrls = [];
+      const videoUrls = [];
+      const mindUrls  = ["./targets.mind"]; // preload mind file (best effort)
 
-</body>
-</html>
+      assets.querySelectorAll('img[src]').forEach(el => {
+        const src = el.getAttribute('src');
+        if (src && !src.startsWith('#')) imageUrls.push(src);
+      });
+
+      assets.querySelectorAll('video[src]').forEach(el => {
+        const src = el.getAttribute('src');
+        if (src && !src.startsWith('#')) videoUrls.push(src);
+      });
+
+      const uniq = (arr) => Array.from(new Set(arr));
+      return {
+        imageUrls: uniq(imageUrls),
+        videoUrls: uniq(videoUrls),
+        mindUrls:  uniq(mindUrls)
+      };
+    }
+
+    async function preloadARAssets() {
+      setProgress(0);
+
+      const { imageUrls, videoUrls, mindUrls } = collectAssetUrls();
+
+      let mindPct = 0;
+      let videoPct = 0;
+      let imgPct = 0;
+
+      const updateCombined = () => {
+        // weights: mind 5%, videos 70%, images 25%
+        const combined = (mindPct * 0.05) + (videoPct * 0.70) + (imgPct * 0.25);
+        setProgress(combined * 100);
+      };
+
+      // 0) targets.mind (best effort)
+      for (let i = 0; i < mindUrls.length; i++) {
+        await fetchWithProgress(mindUrls[i], (p) => {
+          const per = 1 / mindUrls
