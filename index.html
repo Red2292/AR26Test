@@ -14,273 +14,170 @@
       color:#fff; background:linear-gradient(135deg,#ff7a18,#ff3d81);
       box-shadow:0 10px 28px rgba(0,0,0,.35);
       cursor:pointer; animation:pulse 1.8s infinite;
-      -webkit-tap-highlight-color:transparent;
-      transition:opacity 200ms ease;
     }
     @keyframes pulse{
       0%{transform:translateX(-50%) scale(1);}
       50%{transform:translateX(-50%) scale(1.06);}
       100%{transform:translateX(-50%) scale(1);}
     }
-    #startBtn:active{transform:translateX(-50%) scale(.97);}
   </style>
 </head>
 
 <body style="margin:0; overflow:hidden;">
-  <button id="startBtn" type="button">Tap to Start</button>
+<button id="startBtn">Tap to Start</button>
 
-  <a-scene
-    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; maxTrack: 1;"
-    vr-mode-ui="enabled:false"
-    device-orientation-permission-ui="enabled:false"
-    renderer="colorManagement:true"
-  >
-    <a-assets>
-      <!-- thumbs -->
-      <img id="thumb0"  src="./assets/Son-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb1"  src="./assets/Bao-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb2"  src="./assets/Dien-Thumbs.png" crossorigin="anonymous" />
-      <img id="thumb3"  src="./assets/Dung-thumb.png" crossorigin="anonymous" />
-      <img id="thumb4"  src="./assets/Duy-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb5"  src="./assets/Kiet-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb6"  src="./assets/Minh-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb7"  src="./assets/Phong-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb8"  src="./assets/Tin-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb9"  src="./assets/Van-Thumb.png" crossorigin="anonymous" />
-      <img id="thumb10" src="./assets/Xo-Thumb.png" crossorigin="anonymous" />
+<a-scene
+  mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; maxTrack: 1;"
+  vr-mode-ui="enabled:false"
+  device-orientation-permission-ui="enabled:false"
+  renderer="colorManagement:true"
+>
+  <a-assets>
+    <!-- thumbs -->
+    <img id="thumb0" src="./assets/Son-Thumb.png" />
+    <img id="thumb1" src="./assets/Bao-Thumb.png" />
+    <img id="thumb2" src="./assets/Dien-Thumbs.png" />
+    <img id="thumb3" src="./assets/Dung-thumb.png" />
+    <img id="thumb4" src="./assets/Duy-Thumb.png" />
+    <img id="thumb5" src="./assets/Kiet-Thumb.png" />
+    <img id="thumb6" src="./assets/Minh-Thumb.png" />
+    <img id="thumb7" src="./assets/Phong-Thumb.png" />
+    <img id="thumb8" src="./assets/Tin-Thumb.png" />
+    <img id="thumb9" src="./assets/Van-Thumb.png" />
+    <img id="thumb10" src="./assets/Xo-Thumb.png" />
 
-      <!-- videos -->
-      <video id="vid0"  src="./assets/phoma01.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid1"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid2"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid3"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid4"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid5"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid6"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid7"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid8"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid9"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid10" src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+    <!-- videos -->
+    <video id="vid0" src="./assets/phoma01.mp4" loop muted playsinline></video>
+    <video id="vid1" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid2" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid3" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid4" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid5" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid6" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid7" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid8" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid9" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid10" src="./assets/target.mp4" loop muted playsinline></video>
 
-      <!-- sequence used for TARGET 0 (t1-seq renamed to t0_f*) -->
-      <img id="t0_f0" src="./assets/t1-seq/frame_000.png" crossorigin="anonymous" />
-      <img id="t0_f1" src="./assets/t1-seq/frame_001.png" crossorigin="anonymous" />
+    <!-- TARGET 0 sequences -->
+    <!-- t1 -->
+    <img id="t0_f0" src="./assets/t1-seq/frame_000.png" />
+    <img id="t0_f1" src="./assets/t1-seq/frame_001.png" />
+    <!-- t2 -->
+    <img id="t2_f0" src="./assets/t2-seq/frame_000.png" />
+    <img id="t2_f1" src="./assets/t2-seq/frame_001.png" />
+    <!-- t3 -->
+    <img id="t3_f0" src="./assets/t3-seq/frame_000.png" />
+    <img id="t3_f1" src="./assets/t3-seq/frame_001.png" />
+    <img id="t3_f2" src="./assets/t3-seq/frame_002.png" />
+    <!-- t4 -->
+    <img id="t4_f0" src="./assets/t4-seq/frame_000.png" />
+    <img id="t4_f1" src="./assets/t4-seq/frame_001.png" />
+  </a-assets>
 
-      <!-- t2 sequence for TARGET 0 -->
-      <img id="t2_f0" src="./assets/t2-seq/frame_000.png" crossorigin="anonymous" />
-      <img id="t2_f1" src="./assets/t2-seq/frame_001.png" crossorigin="anonymous" />
+  <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
-      <!-- t3 sequence for TARGET 0 -->
-      <img id="t3_f0" src="./assets/t3-seq/frame_000.png" crossorigin="anonymous" />
-      <img id="t3_f1" src="./assets/t3-seq/frame_001.png" crossorigin="anonymous" />
-      <img id="t3_f2" src="./assets/t3-seq/frame_002.png" crossorigin="anonymous" />
+  <!-- TARGET 0 -->
+  <a-entity id="t0" mindar-image-target="targetIndex: 0">
+    <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.090" width="1" height="2"
+      material="shader:flat; transparent:true"></a-image>
 
-      <!-- ✅ t4 sequence for TARGET 0 (2 frames) -->
-      <img id="t4_f0" src="./assets/t4-seq/frame_000.png" crossorigin="anonymous" />
-      <img id="t4_f1" src="./assets/t4-seq/frame_001.png" crossorigin="anonymous" />
-    </a-assets>
+    <a-image id="seqPlane0" src="#t0_f0" position="0 0 0.094" width="1" height="2"
+      material="shader:flat; transparent:true; depthWrite:false" visible="false"></a-image>
 
-    <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
+    <a-image id="seqPlane0_b" src="#t2_f0" position="0 0 0.096" width="1" height="2"
+      material="shader:flat; transparent:true; depthWrite:false" visible="false"></a-image>
 
-    <!-- TARGET 0 -->
-    <a-entity id="t0" mindar-image-target="targetIndex: 0">
-      <!-- base thumb -->
-      <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.090" width="1" height="2"
-        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
+    <a-image id="seqPlane0_c" src="#t3_f0" position="0 0 0.098" width="1" height="2"
+      material="shader:flat; transparent:true; depthWrite:false" visible="false"></a-image>
 
-      <!-- t1-seq layer -->
-      <a-image id="seqPlane0" src="#t0_f0" position="0 0 0.095" width="1" height="2"
-        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false"
-        visible="false"></a-image>
+    <a-image id="seqPlane0_d" src="#t4_f0" position="0 0 0.100" width="1" height="2"
+      material="shader:flat; transparent:true; depthWrite:false" visible="false"></a-image>
 
-      <!-- t2-seq layer -->
-      <a-image id="seqPlane0_b" src="#t2_f0" position="0 0 0.096" width="1" height="2"
-        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false"
-        visible="false"></a-image>
+    <!-- FIX: video phải ở trước camera -->
+    <a-video id="videoPlane0" src="#vid0" position="0 0 0.102" width="1" height="2"
+      material="shader:flat" visible="false"></a-video>
+  </a-entity>
 
-      <!-- t3-seq layer (3 frames) -->
-      <a-image id="seqPlane0_c" src="#t3_f0" position="0 0 0.098" width="1" height="2"
-        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false"
-        visible="false"></a-image>
+  <!-- TARGETS 1..10 -->
+  <a-entity id="t1" mindar-image-target="targetIndex:1">
+    <a-image id="thumbPlane1" src="#thumb1" position="0 0 0.09" width="1" height="2"
+      material="shader:flat; transparent:true"></a-image>
+    <a-video id="videoPlane1" src="#vid1" position="0 0 0.1" width="1" height="2"
+      material="shader:flat" visible="false"></a-video>
+  </a-entity>
 
-      <!-- ✅ t4-seq layer (2 frames) -->
-      <a-image id="seqPlane0_d" src="#t4_f0" position="0 0 0.100" width="1" height="2"
-        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false"
-        visible="false"></a-image>
+  <!-- copy same pattern for t2..t10 -->
+</a-scene>
 
-      <!-- video -->
-      <a-video id="videoPlane0" src="#vid0" position="0 0 0" width="1" height="2"
-        material="shader:flat" visible="false"></a-video>
-    </a-entity>
+<script>
+const btn = document.getElementById('startBtn');
 
-    <!-- TARGETS 1..10 (thumb + video) -->
-    <a-entity id="t1" mindar-image-target="targetIndex: 1">
-      <a-image id="thumbPlane1" src="#thumb1" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane1" src="#vid1" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
+const videos = [...Array(11)].map((_,i)=>document.getElementById(`vid${i}`));
+const targets = [...Array(11)].map((_,i)=>document.getElementById(`t${i}`));
+const thumbs  = [...Array(11)].map((_,i)=>document.getElementById(`thumbPlane${i}`));
+const videosP = [...Array(11)].map((_,i)=>document.getElementById(`videoPlane${i}`));
 
-    <a-entity id="t2" mindar-image-target="targetIndex: 2">
-      <a-image id="thumbPlane2" src="#thumb2" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane2" src="#vid2" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
+const seqA = document.getElementById('seqPlane0');
+const seqB = document.getElementById('seqPlane0_b');
+const seqC = document.getElementById('seqPlane0_c');
+const seqD = document.getElementById('seqPlane0_d');
 
-    <a-entity id="t3" mindar-image-target="targetIndex: 3">
-      <a-image id="thumbPlane3" src="#thumb3" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane3" src="#vid3" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
+const f1 = ['#t0_f0','#t0_f1'];
+const f2 = ['#t2_f0','#t2_f1'];
+const f3 = ['#t3_f0','#t3_f1','#t3_f2'];
+const f4 = ['#t4_f0','#t4_f1'];
 
-    <a-entity id="t4" mindar-image-target="targetIndex: 4">
-      <a-image id="thumbPlane4" src="#thumb4" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane4" src="#vid4" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
+let idx=0, timer=null;
 
-    <a-entity id="t5" mindar-image-target="targetIndex: 5">
-      <a-image id="thumbPlane5" src="#thumb5" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane5" src="#vid5" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
+function startSeq(){
+  if(timer) return;
+  [seqA,seqB,seqC,seqD].forEach(p=>p&&p.setAttribute('visible',true));
+  timer=setInterval(()=>{
+    idx++;
+    seqA?.setAttribute('src',f1[idx%f1.length]);
+    seqB?.setAttribute('src',f2[idx%f2.length]);
+    seqC?.setAttribute('src',f3[idx%f3.length]);
+    seqD?.setAttribute('src',f4[idx%f4.length]);
+  },500);
+}
 
-    <a-entity id="t6" mindar-image-target="targetIndex: 6">
-      <a-image id="thumbPlane6" src="#thumb6" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane6" src="#vid6" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
+function stopSeq(){
+  clearInterval(timer); timer=null; idx=0;
+  seqA?.setAttribute('visible',false);
+  seqB?.setAttribute('visible',false);
+  seqC?.setAttribute('visible',false);
+  seqD?.setAttribute('visible',false);
+}
 
-    <a-entity id="t7" mindar-image-target="targetIndex: 7">
-      <a-image id="thumbPlane7" src="#thumb7" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane7" src="#vid7" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
+function showThumb(i){
+  thumbs[i]?.setAttribute('visible',true);
+  videosP[i]?.setAttribute('visible',false);
+  i===0?startSeq():stopSeq();
+}
 
-    <a-entity id="t8" mindar-image-target="targetIndex: 8">
-      <a-image id="thumbPlane8" src="#thumb8" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane8" src="#vid8" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
+function showVideo(i){
+  thumbs[i]?.setAttribute('visible',false);
+  videosP[i]?.setAttribute('visible',true);
+  if(i===0) stopSeq();
+}
 
-    <a-entity id="t9" mindar-image-target="targetIndex: 9">
-      <a-image id="thumbPlane9" src="#thumb9" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane9" src="#vid9" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
+let unlocked=false;
+btn.onclick=async()=>{
+  if(unlocked) return;
+  unlocked=true;
+  for(const v of videos){try{await v.play();v.pause();v.currentTime=0;}catch{}}
+  btn.remove();
+};
 
-    <a-entity id="t10" mindar-image-target="targetIndex: 10">
-      <a-image id="thumbPlane10" src="#thumb10" position="0 0 0.09" width="1" height="2" material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
-      <a-video id="videoPlane10" src="#vid10" position="0 0 0.1" width="1" height="2" material="shader:flat" visible="false"></a-video>
-    </a-entity>
-
-  </a-scene>
-
-  <script>
-    const btn = document.getElementById('startBtn');
-
-    const videos  = Array.from({ length: 11 }, (_, i) => document.getElementById(`vid${i}`));
-    const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
-
-    const thumbPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`thumbPlane${i}`));
-    const videoPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`videoPlane${i}`));
-
-    // Target 0 sequence planes
-    const seqPlane0a = document.getElementById('seqPlane0');       // t1-seq (2 frames)
-    const seqPlane0b = document.getElementById('seqPlane0_b');     // t2-seq (2 frames)
-    const seqPlane0c = document.getElementById('seqPlane0_c');     // t3-seq (3 frames)
-    const seqPlane0d = document.getElementById('seqPlane0_d');     // ✅ t4-seq (2 frames)
-
-    // Frames (must exist in <a-assets>)
-    const t1Frames = ['#t0_f0', '#t0_f1'];
-    const t2Frames = ['#t2_f0', '#t2_f1'];
-    const t3Frames = ['#t3_f0', '#t3_f1', '#t3_f2'];
-    const t4Frames = ['#t4_f0', '#t4_f1']; // ✅
-
-    let t0Idx = 0;
-    let t0Timer = null;
-    const T0_FPS = 2;
-
-    function startT0Seq() {
-      if (t0Timer) return;
-
-      seqPlane0a?.setAttribute('visible', true);
-      seqPlane0b?.setAttribute('visible', true);
-      seqPlane0c?.setAttribute('visible', true);
-      seqPlane0d?.setAttribute('visible', true);
-
-      t0Timer = setInterval(() => {
-        t0Idx++;
-
-        seqPlane0a?.setAttribute('src', t1Frames[t0Idx % t1Frames.length]);
-        seqPlane0b?.setAttribute('src', t2Frames[t0Idx % t2Frames.length]);
-        seqPlane0c?.setAttribute('src', t3Frames[t0Idx % t3Frames.length]);
-        seqPlane0d?.setAttribute('src', t4Frames[t0Idx % t4Frames.length]);
-
-      }, 1000 / T0_FPS);
-    }
-
-    function stopT0Seq() {
-      if (t0Timer) clearInterval(t0Timer);
-      t0Timer = null;
-      t0Idx = 0;
-
-      seqPlane0a?.setAttribute('src', t1Frames[0]);
-      seqPlane0b?.setAttribute('src', t2Frames[0]);
-      seqPlane0c?.setAttribute('src', t3Frames[0]);
-      seqPlane0d?.setAttribute('src', t4Frames[0]);
-
-      seqPlane0a?.setAttribute('visible', false);
-      seqPlane0b?.setAttribute('visible', false);
-      seqPlane0c?.setAttribute('visible', false);
-      seqPlane0d?.setAttribute('visible', false);
-    }
-
-    function setVisible(el, visible) {
-      if (!el) return;
-      el.setAttribute('visible', visible);
-    }
-
-    function showThumb(i) {
-      setVisible(thumbPlanes[i], true);
-      setVisible(videoPlanes[i], false);
-
-      if (i === 0) startT0Seq();
-      else stopT0Seq();
-    }
-
-    function showVideo(i) {
-      setVisible(thumbPlanes[i], false);
-      setVisible(videoPlanes[i], true);
-
-      if (i === 0) stopT0Seq();
-    }
-
-    // init: show thumbs, hide videos; keep target0 seq hidden until targetFound
-    for (let i = 0; i < 11; i++) showThumb(i);
-    stopT0Seq();
-
-    let unlocked = false;
-
-    async function unlockVideos() {
-      if (unlocked) return;
-      unlocked = true;
-
-      for (const v of videos) {
-        if (!v) continue;
-        try {
-          await v.play();
-          v.pause();
-          v.currentTime = 0;
-        } catch (e) {}
-      }
-
-      btn.style.animation = 'none';
-      btn.style.opacity = '0';
-      btn.style.pointerEvents = 'none';
-      setTimeout(() => {
-        if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
-      }, 220);
-    }
-
-    btn.addEventListener('click', unlockVideos, { once: true });
-
-    targets.forEach((targetEl, i) => {
-      if (!targetEl) return;
-      const v = videos[i];
-
-      if (v) {
-        v.addEventListener('playing', () => showVideo(i));
-        v.addEventListener('pause',   () => showThumb(i));
-        v.addEventListener('ended',
-
+targets.forEach((t,i)=>{
+  if(!t) return;
+  const v=videos[i];
+  v?.addEventListener('playing',()=>showVideo(i));
+  v?.addEventListener('pause',()=>showThumb(i));
+  t.addEventListener('targetFound',()=>unlocked&&showThumb(i));
+  t.addEventListener('targetLost',()=>{v?.pause();showThumb(i);});
+});
+</script>
+</body>
+</html>
