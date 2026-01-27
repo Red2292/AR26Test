@@ -69,6 +69,7 @@
       <img id="thumb8"  src="./assets/Tin-Thumb.png" crossorigin="anonymous" />
       <img id="thumb9"  src="./assets/Van-Thumb.png" crossorigin="anonymous" />
       <img id="thumb10" src="./assets/Xo-Thumb.png" crossorigin="anonymous" />
+       <img id="frame" src="./assets/frame.png" crossorigin="anonymous" />
 
       <!-- videos -->
       <video id="vid0"  src="./assets/phoma01.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
@@ -83,72 +84,68 @@
       <video id="vid9"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid10" src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
 
-      <!-- =========================
-           PNG SEQUENCES (EDIT PATHS!)
-           - t0: 3 frames (as you had)
-           - t1..t6: 6 frames each
-           ========================= -->
-
+      <!-- PNG sequences (AS YOU CURRENTLY HAVE) -->
       <!-- t0-seq (3 frames) -->
       <img id="t0_f0" src="./assets/t0-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t0_f1" src="./assets/t0-seq/frame_001.png" crossorigin="anonymous" />
       <img id="t0_f2" src="./assets/t0-seq/frame_002.png" crossorigin="anonymous" />
 
-      <!-- t1-seq (6 frames) -->
+      <!-- t1-seq (2 frames) -->
       <img id="t1_f0" src="./assets/t1-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t1_f1" src="./assets/t1-seq/frame_001.png" crossorigin="anonymous" />
 
-      <!-- t2-seq (6 frames) -->
+      <!-- t2-seq (2 frames) -->
       <img id="t2_f0" src="./assets/t2-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t2_f1" src="./assets/t2-seq/frame_001.png" crossorigin="anonymous" />
 
-      <!-- t3-seq (6 frames) -->
+      <!-- t3-seq (3 frames) -->
       <img id="t3_f0" src="./assets/t3-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t3_f1" src="./assets/t3-seq/frame_001.png" crossorigin="anonymous" />
       <img id="t3_f2" src="./assets/t3-seq/frame_002.png" crossorigin="anonymous" />
 
-      <!-- t4-seq (6 frames) -->
+      <!-- t4-seq (2 frames) -->
       <img id="t4_f0" src="./assets/t4-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t4_f1" src="./assets/t4-seq/frame_001.png" crossorigin="anonymous" />
-      
-      <!-- t5-seq (6 frames) -->
+
+      <!-- t5-seq (2 frames) -->
       <img id="t5_f0" src="./assets/t5-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t5_f1" src="./assets/t5-seq/frame_001.png" crossorigin="anonymous" />
-
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
-    <!-- =========================
-         TARGET 0
-         - thumb hidden
-         - sequence visible by default
-         - video on top
-         ========================= -->
+    <!-- Target 0 -->
     <a-entity id="t0" mindar-image-target="targetIndex: 0">
       <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.085" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
 
-      <a-image id="t0_seqPlane" src="#t0_f0" position="0 0 0.05" width="1" height="2"
-               material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
+            <a-image id="frame" src="#frame" position="0 0 0.085" width="1" height="2"
+               material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
 
-      <a-image id="t1_seqPlane" src="#t0_f0" position="0 0 0.001" width="1" height="2"
-         material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
+  <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.085" width="1" height="2"
+           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
 
-      <a-image id="t2_seqPlane" src="#t0_f0" position="0 0 0.005" width="1" height="2"
-         material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
-      
-            <a-image id="t3_seqPlane" src="#t0_f0" position="0 0 0.01" width="1" height="2"
-         material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
+  <!-- 6 PNG sequence layers (set correct src + z order) -->
+  <a-image id="t0_seqPlane_0" src="#t0_l0_f0" position="0 0 0.090" width="1" height="2"
+           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
 
+  <a-image id="t0_seqPlane_1" src="#t0_l1_f0" position="0 0 0.095" width="1" height="2"
+           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
 
+  <a-image id="t0_seqPlane_2" src="#t0_l2_f0" position="0 0 0.100" width="1" height="2"
+           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+
+  <a-image id="t0_seqPlane_3" src="#t0_l3_f0" position="0 0 0.105" width="1" height="2"
+           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+
+  <a-image id="t0_seqPlane_4" src="#t0_l4_f0" position="0 0 0.110" width="1" height="2"
+           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+
+  <a-image id="t0_seqPlane_5" src="#t0_l5_f0" position="0 0 0.115" width="1" height="2"
+           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
     </a-entity>
 
-    <!-- =========================
-         TARGET 1..6
-         - thumb + sequence overlay (sequence shown only in thumb mode)
-         - video on top
-         ========================= -->
+    <!-- Target 1 -->
     <a-entity id="t1" mindar-image-target="targetIndex: 1">
       <a-image id="thumbPlane1" src="#thumb1" position="0 0 0.09" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
@@ -158,6 +155,7 @@
                material="shader: flat" visible="false"></a-video>
     </a-entity>
 
+    <!-- Target 2 -->
     <a-entity id="t2" mindar-image-target="targetIndex: 2">
       <a-image id="thumbPlane2" src="#thumb2" position="0 0 0.09" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
@@ -167,6 +165,7 @@
                material="shader: flat" visible="false"></a-video>
     </a-entity>
 
+    <!-- Target 3 -->
     <a-entity id="t3" mindar-image-target="targetIndex: 3">
       <a-image id="thumbPlane3" src="#thumb3" position="0 0 0.09" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
@@ -176,6 +175,7 @@
                material="shader: flat" visible="false"></a-video>
     </a-entity>
 
+    <!-- Target 4 -->
     <a-entity id="t4" mindar-image-target="targetIndex: 4">
       <a-image id="thumbPlane4" src="#thumb4" position="0 0 0.09" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
@@ -185,6 +185,7 @@
                material="shader: flat" visible="false"></a-video>
     </a-entity>
 
+    <!-- Target 5 -->
     <a-entity id="t5" mindar-image-target="targetIndex: 5">
       <a-image id="thumbPlane5" src="#thumb5" position="0 0 0.09" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
@@ -194,16 +195,17 @@
                material="shader: flat" visible="false"></a-video>
     </a-entity>
 
+    <!-- Target 6 (NO seq assets loaded yet -> keep plane but hidden & disabled in JS) -->
     <a-entity id="t6" mindar-image-target="targetIndex: 6">
       <a-image id="thumbPlane6" src="#thumb6" position="0 0 0.09" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
-      <a-image id="t6_seqPlane" src="#t6_f0" position="0 0 0.095" width="1" height="2"
+      <a-image id="t6_seqPlane" src="#thumb6" position="0 0 0.095" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
       <a-video id="videoPlane6" src="#vid6" position="0 0 0.1" width="1" height="2"
                material="shader: flat" visible="false"></a-video>
     </a-entity>
 
-    <!-- Targets 7-10 (no sequences requested) -->
+    <!-- Targets 7-10 -->
     <a-entity id="t7" mindar-image-target="targetIndex: 7">
       <a-image id="thumbPlane7" src="#thumb7" position="0 0 0.09" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
@@ -244,7 +246,7 @@
     const videoPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`videoPlane${i}`));
 
     // =========================
-    // SEQUENCES CONFIG
+    // SEQUENCES CONFIG (MATCH YOUR LOADED FRAMES)
     // =========================
     const seqPlanes = {
       0: document.getElementById('t0_seqPlane'),
@@ -253,20 +255,19 @@
       3: document.getElementById('t3_seqPlane'),
       4: document.getElementById('t4_seqPlane'),
       5: document.getElementById('t5_seqPlane'),
-      6: document.getElementById('t6_seqPlane'),
+      6: document.getElementById('t6_seqPlane'), // no real frames yet
     };
 
     const seqFrames = {
       0: ['#t0_f0', '#t0_f1', '#t0_f2'],
-      1: ['#t1_f0', '#t1_f1', '#t1_f2', '#t1_f3', '#t1_f4', '#t1_f5'],
-      2: ['#t2_f0', '#t2_f1', '#t2_f2', '#t2_f3', '#t2_f4', '#t2_f5'],
-      3: ['#t3_f0', '#t3_f1', '#t3_f2', '#t3_f3', '#t3_f4', '#t3_f5'],
-      4: ['#t4_f0', '#t4_f1', '#t4_f2', '#t4_f3', '#t4_f4', '#t4_f5'],
-      5: ['#t5_f0', '#t5_f1', '#t5_f2', '#t5_f3', '#t5_f4', '#t5_f5'],
-      6: ['#t6_f0', '#t6_f1', '#t6_f2', '#t6_f3', '#t6_f4', '#t6_f5'],
+      1: ['#t1_f0', '#t1_f1'],
+      2: ['#t2_f0', '#t2_f1'],
+      3: ['#t3_f0', '#t3_f1', '#t3_f2'],
+      4: ['#t4_f0', '#t4_f1'],
+      5: ['#t5_f0', '#t5_f1'],
+      // 6: no frames -> disable sequence for t6
     };
 
-    // fps per target (tweak freely)
     const seqFPS = {
       0: 1,
       1: 1,
@@ -274,7 +275,6 @@
       3: 1,
       4: 1,
       5: 1,
-      6: 1,
     };
 
     const seqState = {}; // { i: { timer, frameIndex } }
@@ -287,9 +287,8 @@
       if (seqState[i]?.timer) return;
 
       seqState[i] = seqState[i] || { timer: null, frameIndex: 0 };
-      const fps = seqFPS[i] || 10;
+      const fps = seqFPS[i] || 6;
 
-      // ensure visible
       plane.setAttribute('visible', true);
 
       seqState[i].timer = setInterval(() => {
@@ -312,6 +311,8 @@
       if (plane && frames && frames.length) {
         plane.setAttribute('src', frames[0]);
         plane.setAttribute('visible', false);
+      } else if (plane) {
+        plane.setAttribute('visible', false);
       }
     }
 
@@ -322,11 +323,9 @@
     let unlocked = false;
 
     function showThumb(i) {
-      // default: show thumb, hide video
       thumbPlanes[i].setAttribute('visible', true);
       videoPlanes[i].setAttribute('visible', false);
 
-      // sequences only for 0..6
       stopAllSequences();
 
       // target 0: hide thumb, use sequence as thumb state
@@ -336,25 +335,23 @@
         return;
       }
 
-      // target 1..6: keep thumb visible + show sequence overlay
-      if (i >= 1 && i <= 6) {
+      // target 1..5: keep thumb + sequence overlay
+      if (i >= 1 && i <= 5) {
         startSequence(i);
       }
+      // target 6: no sequence frames yet -> do nothing
     }
 
     function showVideo(i) {
-      // hide thumb, show video
       thumbPlanes[i].setAttribute('visible', false);
       videoPlanes[i].setAttribute('visible', true);
-
-      // stop sequences when video plays
       stopAllSequences();
     }
 
-    // init: show thumb for all, but don't run sequences yet (they will run when a target is found)
+    // init: show thumb for all, keep sequences off
     for (let i = 0; i < 11; i++) {
       videoPlanes[i].setAttribute('visible', false);
-      thumbPlanes[i].setAttribute('visible', i !== 0); // t0 thumb hidden, uses seq when target found
+      thumbPlanes[i].setAttribute('visible', i !== 0); // t0 thumb hidden
     }
     stopAllSequences();
 
@@ -390,7 +387,6 @@
       targetEl.addEventListener('targetFound', async () => {
         if (!unlocked) return;
 
-        // show thumb/sequence state immediately, then play video
         showThumb(i);
 
         try {
@@ -405,13 +401,9 @@
           v.pause();
           v.currentTime = 0;
         } catch (e) {}
-
-        // back to thumb state (sequence for 0..6)
         showThumb(i);
       });
     });
   </script>
 </body>
 </html>
-
-
