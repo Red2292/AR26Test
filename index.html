@@ -87,6 +87,9 @@
       <img id="t0_f0" src="./assets/t0-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t0_f1" src="./assets/t0-seq/frame_001.png" crossorigin="anonymous" />
       <img id="t0_f2" src="./assets/t0-seq/frame_002.png" crossorigin="anonymous" />
+
+      <img id="t1_f0" src="./assets/t1-seq/frame_000.png" crossorigin="anonymous" />
+      <img id="t1_f1" src="./assets/t1-seq/frame_001.png" crossorigin="anonymous" />
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
@@ -98,8 +101,11 @@
                material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
 
       <!-- PNG sequence plane (thumb state) -->
-      <a-image id="t0_seqPlane" src="#t0_f0" position="0 0 0.095" width="1" height="2"
+      <a-image id="t1seqPlane" src="#t0_f0" position="0 0 0.01" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
+
+       <a-image id="t0_seqPlane" src="#t0_f0" position="0 0 0.095" width="1" height="2"
+               material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>     
 
       <!-- Video plane on top -->
       <a-video id="videoPlane0" src="#vid0" position="0 0 0.12" width="1" height="2"
@@ -285,3 +291,4 @@
   </script>
 </body>
 </html>
+
