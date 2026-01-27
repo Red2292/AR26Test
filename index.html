@@ -77,9 +77,17 @@
       <img id="t3_f1" src="./assets/t3-seq/frame_001.png" crossorigin="anonymous" />
       <img id="t3_f2" src="./assets/t3-seq/frame_002.png" crossorigin="anonymous" />
 
-      <!-- t4-seq (2 frames) -->
+      <!-- ✅ t4-seq (10 frames) -->
       <img id="t4_f0" src="./assets/t4-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t4_f1" src="./assets/t4-seq/frame_001.png" crossorigin="anonymous" />
+      <img id="t4_f2" src="./assets/t4-seq/frame_002.png" crossorigin="anonymous" />
+      <img id="t4_f3" src="./assets/t4-seq/frame_003.png" crossorigin="anonymous" />
+      <img id="t4_f4" src="./assets/t4-seq/frame_004.png" crossorigin="anonymous" />
+      <img id="t4_f5" src="./assets/t4-seq/frame_005.png" crossorigin="anonymous" />
+      <img id="t4_f6" src="./assets/t4-seq/frame_006.png" crossorigin="anonymous" />
+      <img id="t4_f7" src="./assets/t4-seq/frame_007.png" crossorigin="anonymous" />
+      <img id="t4_f8" src="./assets/t4-seq/frame_008.png" crossorigin="anonymous" />
+      <img id="t4_f9" src="./assets/t4-seq/frame_009.png" crossorigin="anonymous" />
 
       <!-- ✅ t5-seq (2 frames) -->
       <img id="t5_f0" src="./assets/t5-seq/frame_000.png" crossorigin="anonymous" />
@@ -98,10 +106,9 @@
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
     <!-- =======================
-         TARGET 0 (thumb + 7 seq layers)
+         TARGET 0 (7 seq layers)
          ======================= -->
     <a-entity id="t0" mindar-image-target="targetIndex: 0">
-
 
       <!-- layer A: t1 (2f) -->
       <a-image id="seqPlane0_a" src="#t1_f0" position="0 0 0.094" width="1" height="2"
@@ -127,7 +134,7 @@
       <a-image id="seqPlane0_f" src="#t0_f0" position="0 0 0.7" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
-      <!-- layer D: t4 (2f) -->
+      <!-- layer D: t4 (10f) -->
       <a-image id="seqPlane0_d" src="#t4_f0" position="0 0 0.9" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
     </a-entity>
@@ -220,7 +227,7 @@
     const seqA = document.getElementById('seqPlane0_a'); // t1
     const seqB = document.getElementById('seqPlane0_b'); // t2
     const seqC = document.getElementById('seqPlane0_c'); // t3
-    const seqD = document.getElementById('seqPlane0_d'); // t4
+    const seqD = document.getElementById('seqPlane0_d'); // t4 (10 frames)
     const seqE = document.getElementById('seqPlane0_e'); // t5 ✅
     const seqF = document.getElementById('seqPlane0_f'); // t0 ✅
     const seqG = document.getElementById('seqPlane0_g'); // t6 ✅ NEW
@@ -229,7 +236,10 @@
     const t1Frames = ['#t1_f0', '#t1_f1'];               // 2
     const t2Frames = ['#t2_f0', '#t2_f1'];               // 2
     const t3Frames = ['#t3_f0', '#t3_f1', '#t3_f2'];     // 3
-    const t4Frames = ['#t4_f0', '#t4_f1'];               // 2
+    const t4Frames = [                                  // ✅ 10
+      '#t4_f0', '#t4_f1', '#t4_f2', '#t4_f3', '#t4_f4',
+      '#t4_f5', '#t4_f6', '#t4_f7', '#t4_f8', '#t4_f9'
+    ];
     const t5Frames = ['#t5_f0', '#t5_f1'];               // 2 ✅
     const t6Frames = ['#t6_f0', '#t6_f1'];               // 2 ✅ NEW
     const t0Frames = ['#t0_f0', '#t0_f1', '#t0_f2'];     // 3 ✅
@@ -249,9 +259,9 @@
         seqA?.setAttribute('src', t1Frames[t0Idx % t1Frames.length]);
         seqB?.setAttribute('src', t2Frames[t0Idx % t2Frames.length]);
         seqC?.setAttribute('src', t3Frames[t0Idx % t3Frames.length]);
-        seqD?.setAttribute('src', t4Frames[t0Idx % t4Frames.length]);
+        seqD?.setAttribute('src', t4Frames[t0Idx % t4Frames.length]); // ✅ 10 frames
         seqE?.setAttribute('src', t5Frames[t0Idx % t5Frames.length]);
-        seqG?.setAttribute('src', t6Frames[t0Idx % t6Frames.length]); // ✅ NEW
+        seqG?.setAttribute('src', t6Frames[t0Idx % t6Frames.length]);
         seqF?.setAttribute('src', t0Frames[t0Idx % t0Frames.length]);
 
       }, 1000 / T0_FPS);
@@ -265,9 +275,9 @@
       seqA?.setAttribute('src', t1Frames[0]);
       seqB?.setAttribute('src', t2Frames[0]);
       seqC?.setAttribute('src', t3Frames[0]);
-      seqD?.setAttribute('src', t4Frames[0]);
+      seqD?.setAttribute('src', t4Frames[0]); // ✅
       seqE?.setAttribute('src', t5Frames[0]);
-      seqG?.setAttribute('src', t6Frames[0]); // ✅ NEW
+      seqG?.setAttribute('src', t6Frames[0]);
       seqF?.setAttribute('src', t0Frames[0]);
 
       [seqA, seqB, seqC, seqD, seqE, seqF, seqG].forEach(p => p && p.setAttribute('visible', false));
@@ -358,6 +368,3 @@
 
 </body>
 </html>
-
-
-BACK UPPP
