@@ -97,82 +97,157 @@
       material="shader:flat" visible="false"></a-video>
   </a-entity>
 
-  <!-- TARGETS 1–10 (normal thumb + video) -->
-  <script>
-    for(let i=1;i<=10;i++){
-      document.write(`
-        <a-entity id="t${i}" mindar-image-target="targetIndex:${i}">
-          <a-image id="thumbPlane${i}" src="#thumb${i}" position="0 0 0.09" width="1" height="2"
-            material="shader:flat; transparent:true"></a-image>
-          <a-video id="videoPlane${i}" src="#vid${i}" position="0 0 0.1" width="1" height="2"
-            material="shader:flat" visible="false"></a-video>
-        </a-entity>
-      `);
-    }
-  </script>
-</a-scene>
-
 <script>
-const btn = document.getElementById('startBtn');
-const videos = [...Array(11)].map((_,i)=>document.getElementById(`vid${i}`));
-const thumbs = [...Array(11)].map((_,i)=>document.getElementById(`thumbPlane${i}`));
-const videoPlanes = [...Array(11)].map((_,i)=>document.getElementById(`videoPlane${i}`));
+  const btn = document.getElementById('startBtn');
 
-/* ===== T0 sequence ===== */
-const seqPlane0 = document.getElementById('seqPlane0');
-const t0Frames = ['#t0_f0','#t0_f1'];
-let t0Idx=0, t0Timer=null;
-const FPS=2;
+  const videos  = Array.from({ length: 11 }, (_, i) => document.getElementById(`vid${i}`));
+  const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
 
-function startT0Seq(){
-  if(t0Timer) return;
-  seqPlane0.setAttribute('visible',true);
-  t0Timer=setInterval(()=>{
-    t0Idx=(t0Idx+1)%t0Frames.length;
-    seqPlane0.setAttribute('src',t0Frames[t0Idx]);
-  },1000/FPS);
-}
-function stopT0Seq(){
-  clearInterval(t0Timer); t0Timer=null; t0Idx=0;
-  seqPlane0.setAttribute('src',t0Frames[0]);
-  seqPlane0.setAttribute('visible',false);
-}
+  const thumbPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`thumbPlane${i}`));
+  const videoPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`videoPlane${i}`));
 
-/* ===== UI helpers ===== */
-function showThumb(i){
-  thumbs[i].setAttribute('visible',true);
-  videoPlanes[i]?.setAttribute('visible',false);
-  if(i===0) startT0Seq(); else stopT0Seq();
-}
-function showVideo(i){
-  thumbs[i].setAttribute('visible',false);
-  videoPlanes[i]?.setAttribute('visible',true);
-  if(i===0) stopT0Seq();
-}
+  // ===== TARGET 0: TWO PNG SEQUENCE LAYERS =====
+  // Layer A uses t1-seq (2 frames) that you mapped as: #t0_f0, #t0_f1
+  // Layer B uses t2-seq (2 frames): #t2_f0, #t2_f1
+  const seqPlane0a = document.getElementById('seqPlane0');     // <a-image id="seqPlane0" ...>
+  const seqPlane0b = document.getElementById('seqPlane0_b');   // <a-image id="seqPlane0_b" ...>
 
-/* unlock */
-btn.onclick=async()=>{
-  for(const v of videos){
-    try{await v.play();v.pause();v.currentTime=0}catch{}
+  const t1Frames = ['#t0_f0', '#t0_f1'];   // t1-seq frames
+  const t2Frames = ['#t2_f0', '#t2_f1'];   // t2-seq frames
+
+  let t0Idx = 0;
+  let t0Timer = null;
+  const T0_FPS = 2;
+
+  function startT0Seq() {
+    if (t0Timer) return;
+
+    if (seqPlane0a) seqPlane0a.setAttribute('visible', true);
+    if (seqPlane0b) seqPlane0b.setAttribute('visible', true);
+
+    t0Timer = setInterval(() => {
+      t0Idx++;
+
+      if (seqPlane0a) {
+        seqPlane0a.setAttribute('src', t1Frames[t0Idx % t1Frames.length]);
+      }
+      if (seqPlane0b) {
+        seqPlane0b.setAttribute('src', t2Frames[t0Idx % t2Frames.length]);
+      }
+    }, 1000 / T0_FPS);
   }
-  btn.remove();
-};
 
-/* bind targets */
-for(let i=0;i<=10;i++){
-  const t=document.getElementById(`t${i}`);
-  const v=videos[i];
-  t.addEventListener('targetFound',()=>{
-    showThumb(i);
-    if(v){v.currentTime=0;v.play().catch(()=>{})}
+  function stopT0Seq() {
+    if (t0Timer) clearInterval(t0Timer);
+    t0Timer = null;
+    t0Idx = 0;
+
+    if (seqPlane0a) {
+      seqPlane0a.setAttribute('src', t1Frames[0]);
+      seqPlane0a.setAttribute('visible', false);
+    }
+    if (seqPlane0b) {
+      seqPlane0b.setAttribute('src', t2Frames[0]);
+      seqPlane0b.setAttribute('visible', false);
+    }
+  }
+
+  // ===== VISIBILITY HELPERS =====
+  function setVisible(el, v) {
+    if (!el) return;
+    el.setAttribute('visible', v);
+  }
+
+  function showThumb(i) {
+    setVisible(thumbPlanes[i], true);
+    setVisible(videoPlanes[i], false);
+
+    // Only target 0 runs sequences
+    if (i === 0) startT0Seq();
+    else stopT0Seq();
+  }
+
+  function showVideo(i) {
+    setVisible(thumbPlanes[i], false);
+    setVisible(videoPlanes[i], true);
+
+    // Stop target 0 sequences when video plays
+    if (i === 0) stopT0Seq();
+  }
+
+  // ===== INIT =====
+  for (let i = 0; i < 11; i++) {
+    showThumb(i); // thumbs on, videos off
+  }
+  stopT0Seq(); // keep seq hidden until target 0 is found
+
+  // ===== iOS VIDEO UNLOCK =====
+  let unlocked = false;
+
+  async function unlockVideos() {
+    if (unlocked) return;
+    unlocked = true;
+
+    for (const v of videos) {
+      if (!v) continue;
+      try {
+        await v.play();
+        v.pause();
+        v.currentTime = 0;
+      } catch (e) {}
+    }
+
+    btn.style.animation = 'none';
+    btn.style.opacity = '0';
+    btn.style.pointerEvents = 'none';
+    setTimeout(() => {
+      if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
+    }, 220);
+  }
+
+  btn.addEventListener('click', unlockVideos, { once: true });
+
+  // ===== TARGET EVENTS =====
+  targets.forEach((targetEl, i) => {
+    if (!targetEl) return;
+    const v = videos[i];
+
+    if (v) {
+      v.addEventListener('playing', () => showVideo(i));
+      v.addEventListener('pause',   () => showThumb(i));
+      v.addEventListener('ended',   () => showThumb(i));
+    }
+
+    targetEl.addEventListener('targetFound', async () => {
+      if (!unlocked) return;
+
+      // Show thumb state immediately (for target 0 this starts sequences)
+      showThumb(i);
+
+      // Then play video (if any)
+      try {
+        if (!v) return;
+        v.currentTime = 0;
+        const p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      } catch (e) {}
+    });
+
+    targetEl.addEventListener('targetLost', () => {
+      try {
+        if (!v) return;
+        v.pause();
+        v.currentTime = 0;
+      } catch (e) {}
+
+      // Back to thumb (target 0 sequences start again if desired)
+      showThumb(i);
+    });
   });
-  t.addEventListener('targetLost',()=>{
-    if(v){v.pause();v.currentTime=0}
-    showThumb(i);
-  });
-}
 </script>
+
 </body>
 </html>
+
 
 
