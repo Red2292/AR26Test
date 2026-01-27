@@ -6,6 +6,57 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
+    /* ===== Loading overlay ===== */
+    #loadingOverlay{
+      position:fixed; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(0,0,0,.72);
+      z-index:10000;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    #loadingCard{
+      width:min(520px, calc(100vw - 32px));
+      border-radius:18px;
+      padding:18px 18px 16px;
+      background:rgba(20,20,24,.86);
+      box-shadow:0 12px 40px rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    #loadingTitle{
+      font:800 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      color:#fff;
+      margin:0 0 10px;
+      opacity:.92;
+    }
+    #loadingSub{
+      font:600 12px/1.3 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:rgba(255,255,255,.75);
+      margin:0 0 12px;
+    }
+    #barWrap{
+      height:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    #bar{
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background:linear-gradient(135deg,#ff7a18,#ff3d81);
+      transition:width 200ms ease;
+    }
+    #pct{
+      margin-top:10px;
+      font:800 12px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:rgba(255,255,255,.85);
+      letter-spacing:.4px;
+    }
+
+    /* ===== Start button ===== */
     #startBtn{
       position:fixed; z-index:9999;
       left:50%; bottom:24px; transform:translateX(-50%);
@@ -16,6 +67,7 @@
       cursor:pointer; animation:pulse 1.8s infinite;
       -webkit-tap-highlight-color:transparent;
       transition:opacity 200ms ease;
+      display:none; /* ✅ hidden until loading done */
     }
     @keyframes pulse{
       0%{transform:translateX(-50%) scale(1);}
@@ -27,6 +79,17 @@
 </head>
 
 <body style="margin:0; overflow:hidden;">
+
+  <!-- ✅ Loading overlay -->
+  <div id="loadingOverlay">
+    <div id="loadingCard">
+      <p id="loadingTitle">Loading AR Assets</p>
+      <p id="loadingSub">Please wait…</p>
+      <div id="barWrap"><div id="bar"></div></div>
+      <div id="pct">0%</div>
+    </div>
+  </div>
+
   <button id="startBtn" type="button">Tap to Start</button>
 
   <a-scene
@@ -217,6 +280,11 @@
   <script>
     const btn = document.getElementById('startBtn');
 
+    // ===== Loading UI refs =====
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const bar = document.getElementById('bar');
+    const pct = document.getElementById('pct');
+
     const videos  = Array.from({ length: 11 }, (_, i) => document.getElementById(`vid${i}`));
     const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
 
@@ -228,21 +296,21 @@
     const seqB = document.getElementById('seqPlane0_b'); // t2
     const seqC = document.getElementById('seqPlane0_c'); // t3
     const seqD = document.getElementById('seqPlane0_d'); // t4 (10 frames)
-    const seqE = document.getElementById('seqPlane0_e'); // t5 ✅
-    const seqF = document.getElementById('seqPlane0_f'); // t0 ✅
-    const seqG = document.getElementById('seqPlane0_g'); // t6 ✅ NEW
+    const seqE = document.getElementById('seqPlane0_e'); // t5
+    const seqF = document.getElementById('seqPlane0_f'); // t0
+    const seqG = document.getElementById('seqPlane0_g'); // t6
 
     // Frames
     const t1Frames = ['#t1_f0', '#t1_f1'];               // 2
     const t2Frames = ['#t2_f0', '#t2_f1'];               // 2
     const t3Frames = ['#t3_f0', '#t3_f1', '#t3_f2'];     // 3
-    const t4Frames = [                                  // ✅ 10
+    const t4Frames = [                                  // 10
       '#t4_f0', '#t4_f1', '#t4_f2', '#t4_f3', '#t4_f4',
       '#t4_f5', '#t4_f6', '#t4_f7', '#t4_f8', '#t4_f9'
     ];
-    const t5Frames = ['#t5_f0', '#t5_f1'];               // 2 ✅
-    const t6Frames = ['#t6_f0', '#t6_f1'];               // 2 ✅ NEW
-    const t0Frames = ['#t0_f0', '#t0_f1', '#t0_f2'];     // 3 ✅
+    const t5Frames = ['#t5_f0', '#t5_f1'];               // 2
+    const t6Frames = ['#t6_f0', '#t6_f1'];               // 2
+    const t0Frames = ['#t0_f0', '#t0_f1', '#t0_f2'];     // 3
 
     let t0Idx = 0;
     let t0Timer = null;
@@ -259,7 +327,7 @@
         seqA?.setAttribute('src', t1Frames[t0Idx % t1Frames.length]);
         seqB?.setAttribute('src', t2Frames[t0Idx % t2Frames.length]);
         seqC?.setAttribute('src', t3Frames[t0Idx % t3Frames.length]);
-        seqD?.setAttribute('src', t4Frames[t0Idx % t4Frames.length]); // ✅ 10 frames
+        seqD?.setAttribute('src', t4Frames[t0Idx % t4Frames.length]);
         seqE?.setAttribute('src', t5Frames[t0Idx % t5Frames.length]);
         seqG?.setAttribute('src', t6Frames[t0Idx % t6Frames.length]);
         seqF?.setAttribute('src', t0Frames[t0Idx % t0Frames.length]);
@@ -275,7 +343,7 @@
       seqA?.setAttribute('src', t1Frames[0]);
       seqB?.setAttribute('src', t2Frames[0]);
       seqC?.setAttribute('src', t3Frames[0]);
-      seqD?.setAttribute('src', t4Frames[0]); // ✅
+      seqD?.setAttribute('src', t4Frames[0]);
       seqE?.setAttribute('src', t5Frames[0]);
       seqG?.setAttribute('src', t6Frames[0]);
       seqF?.setAttribute('src', t0Frames[0]);
@@ -307,7 +375,7 @@
     for (let i = 0; i < 11; i++) showThumb(i);
     stopT0Seq();
 
-    // iOS unlock
+    // ===== iOS unlock =====
     let unlocked = false;
 
     async function unlockVideos() {
@@ -364,6 +432,81 @@
         showThumb(i);
       });
     });
+
+    // ===== ✅ Loading bar logic =====
+    function setProgress(done, total) {
+      const p = total ? Math.round((done / total) * 100) : 0;
+      bar.style.width = `${p}%`;
+      pct.textContent = `${p}%`;
+    }
+
+    function waitAsset(el) {
+      return new Promise((resolve) => {
+        if (!el) return resolve();
+
+        const tag = el.tagName.toLowerCase();
+
+        // Images
+        if (tag === 'img') {
+          if (el.complete && el.naturalWidth > 0) return resolve();
+          const onDone = () => { cleanup(); resolve(); };
+          const onErr  = () => { cleanup(); resolve(); }; // don't block forever
+          const cleanup = () => {
+            el.removeEventListener('load', onDone);
+            el.removeEventListener('error', onErr);
+          };
+          el.addEventListener('load', onDone, { once: true });
+          el.addEventListener('error', onErr, { once: true });
+          return;
+        }
+
+        // Videos
+        if (tag === 'video') {
+          // If metadata already loaded, good enough for "ready"
+          if (el.readyState >= 1) return resolve(); // HAVE_METADATA
+          const onDone = () => { cleanup(); resolve(); };
+          const onErr  = () => { cleanup(); resolve(); };
+          const cleanup = () => {
+            el.removeEventListener('loadedmetadata', onDone);
+            el.removeEventListener('error', onErr);
+          };
+          el.addEventListener('loadedmetadata', onDone, { once: true });
+          el.addEventListener('error', onErr, { once: true });
+          // Kick preload in some mobile browsers
+          try { el.load(); } catch(e) {}
+          return;
+        }
+
+        // Fallback
+        resolve();
+      });
+    }
+
+    async function runLoading() {
+      // Collect all assets inside <a-assets>
+      const assetsRoot = document.querySelector('a-assets');
+      const allAssets = assetsRoot ? Array.from(assetsRoot.querySelectorAll('img, video')) : [];
+
+      let done = 0;
+      const total = allAssets.length || 1;
+      setProgress(done, total);
+
+      // Wait each asset; update bar
+      for (const a of allAssets) {
+        await waitAsset(a);
+        done++;
+        setProgress(done, total);
+      }
+
+      // Small delay so 100% feels stable
+      setTimeout(() => {
+        if (loadingOverlay) loadingOverlay.style.display = 'none';
+        btn.style.display = 'block'; // ✅ show Tap to Start only after loaded
+      }, 150);
+    }
+
+    // Start loading after DOM is ready
+    window.addEventListener('load', runLoading, { once: true });
   </script>
 
 </body>
