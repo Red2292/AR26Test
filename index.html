@@ -13,10 +13,9 @@
       font-size:16px; font-weight:800; letter-spacing:.4px; text-transform:uppercase;
       color:#fff; background:linear-gradient(135deg,#ff7a18,#ff3d81);
       box-shadow:0 10px 28px rgba(0,0,0,.35);
-      cursor:pointer;
+      cursor:pointer; animation:pulse 1.8s infinite;
       -webkit-tap-highlight-color:transparent;
-      transition:opacity 200ms ease, transform 120ms ease;
-      animation:pulse 1.8s infinite;
+      transition:opacity 200ms ease;
     }
     @keyframes pulse{
       0%{transform:translateX(-50%) scale(1);}
@@ -30,9 +29,7 @@
 
 <body style="margin:0; overflow:hidden;">
 
-  <!-- =======================
-       LOADER OVERLAY (OPTION A)
-       ======================= -->
+  <!-- ✅ Loading UI (Option A) -->
   <div id="loader" style="
     position:fixed; inset:0; z-index:10000;
     display:flex; align-items:center; justify-content:center;
@@ -53,7 +50,7 @@
     </div>
   </div>
 
-  <!-- Start button (enabled only after preload finished) -->
+  <!-- ✅ Start button (disabled until preload done) -->
   <button id="startBtn" type="button" disabled>Loading…</button>
 
   <a-scene
@@ -112,7 +109,7 @@
       <img id="t5_f0" src="./assets/t5-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t5_f1" src="./assets/t5-seq/frame_001.png" crossorigin="anonymous" />
 
-      <!-- t6-seq (2 frames) -->
+      <!-- ✅ t6-seq (2 frames) -->
       <img id="t6_f0" src="./assets/t6-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t6_f1" src="./assets/t6-seq/frame_001.png" crossorigin="anonymous" />
 
@@ -125,7 +122,7 @@
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
     <!-- =======================
-         TARGET 0 (thumb + 7 seq layers)
+         TARGET 0 (thumb + seq layers t1..t6 + t0)
          ======================= -->
     <a-entity id="t0" mindar-image-target="targetIndex: 0">
       <!-- base thumb -->
@@ -148,7 +145,7 @@
       <a-image id="seqPlane0_c" src="#t3_f0" position="0 0 0.4" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
-      <!-- layer G: t6 (2f) -->
+      <!-- ✅ layer G: t6 (2f) -->
       <a-image id="seqPlane0_g" src="#t6_f0" position="0 0 0.55" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
@@ -240,9 +237,7 @@
     const btn = document.getElementById('startBtn');
 
     /* =======================
-       OPTION A LOADER (REAL-ISH)
-       - videos: byte-progress (needs Content-Length)
-       - images: count-progress
+       LOADER (Option A)
        ======================= */
     const loader = document.getElementById('loader');
     const loaderBar = document.getElementById('loaderBar');
@@ -258,9 +253,7 @@
       if (!loader) return;
       loader.style.transition = "opacity 250ms ease";
       loader.style.opacity = "0";
-      setTimeout(() => {
-        if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-      }, 260);
+      setTimeout(() => loader.remove(), 260);
     }
 
     function enableStart() {
@@ -268,8 +261,10 @@
       btn.style.opacity = '1';
       btn.style.pointerEvents = 'auto';
       btn.textContent = "Tap to Start";
+      btn.style.animation = "pulse 1.8s infinite";
     }
 
+    // Count-based preload for images (thumbs + seq frames)
     function preloadImagesByCount(urls, onProgress) {
       let loaded = 0;
       const total = urls.length || 1;
@@ -290,13 +285,14 @@
       });
     }
 
+    // Byte-progress fetch (best for mp4; needs Content-Length)
     async function fetchWithProgress(url, onProgress) {
       const res = await fetch(url, { cache: "force-cache" });
       if (!res.ok) throw new Error(`Failed: ${url}`);
 
       const len = Number(res.headers.get('content-length')) || 0;
       if (!res.body || !len) {
-        await res.blob(); // can't compute byte % without length
+        await res.blob();
         onProgress(1);
         return;
       }
@@ -318,7 +314,7 @@
 
       const imageUrls = [];
       const videoUrls = [];
-      const mindUrls  = ["./targets.mind"]; // preload mind file (best effort)
+      const mindUrls = ["./targets.mind"];
 
       assets.querySelectorAll('img[src]').forEach(el => {
         const src = el.getAttribute('src');
@@ -334,7 +330,7 @@
       return {
         imageUrls: uniq(imageUrls),
         videoUrls: uniq(videoUrls),
-        mindUrls:  uniq(mindUrls)
+        mindUrls: uniq(mindUrls),
       };
     }
 
@@ -343,17 +339,222 @@
 
       const { imageUrls, videoUrls, mindUrls } = collectAssetUrls();
 
-      let mindPct = 0;
-      let videoPct = 0;
-      let imgPct = 0;
+      // weights: mind 5%, videos 70%, images 25%
+      let mindPct = 0, videoPct = 0, imgPct = 0;
 
-      const updateCombined = () => {
-        // weights: mind 5%, videos 70%, images 25%
+      const update = () => {
         const combined = (mindPct * 0.05) + (videoPct * 0.70) + (imgPct * 0.25);
         setProgress(combined * 100);
       };
 
-      // 0) targets.mind (best effort)
+      // targets.mind
       for (let i = 0; i < mindUrls.length; i++) {
         await fetchWithProgress(mindUrls[i], (p) => {
-          const per = 1 / mindUrls
+          const per = 1 / mindUrls.length;
+          mindPct = (i * per) + (p * per);
+          update();
+        }).catch(() => {
+          mindPct = 1;
+          update();
+        });
+      }
+
+      // videos
+      for (let i = 0; i < videoUrls.length; i++) {
+        await fetchWithProgress(videoUrls[i], (p) => {
+          const per = 1 / videoUrls.length;
+          videoPct = (i * per) + (p * per);
+          update();
+        }).catch(() => {
+          const per = 1 / videoUrls.length;
+          videoPct = Math.min(1, (i + 1) * per);
+          update();
+        });
+      }
+
+      // images
+      await preloadImagesByCount(imageUrls, (p) => {
+        imgPct = p;
+        update();
+      });
+
+      setProgress(100);
+    }
+
+    // Start loading ASAP
+    preloadARAssets()
+      .then(() => {
+        enableStart();
+        hideLoader();
+      })
+      .catch(() => {
+        enableStart();
+        hideLoader();
+      });
+
+    /* =======================
+       MAIN LOGIC (your original)
+       ======================= */
+    const videos  = Array.from({ length: 11 }, (_, i) => document.getElementById(`vid${i}`));
+    const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
+
+    const thumbPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`thumbPlane${i}`));
+    const videoPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`videoPlane${i}`)); // (1..10 exist)
+
+    // Target 0 sequence planes
+    const seqA = document.getElementById('seqPlane0_a'); // t1
+    const seqB = document.getElementById('seqPlane0_b'); // t2
+    const seqC = document.getElementById('seqPlane0_c'); // t3
+    const seqD = document.getElementById('seqPlane0_d'); // t4
+    const seqE = document.getElementById('seqPlane0_e'); // t5
+    const seqF = document.getElementById('seqPlane0_f'); // t0
+    const seqG = document.getElementById('seqPlane0_g'); // t6
+
+    // Frames
+    const t1Frames = ['#t1_f0', '#t1_f1'];               // 2
+    const t2Frames = ['#t2_f0', '#t2_f1'];               // 2
+    const t3Frames = ['#t3_f0', '#t3_f1', '#t3_f2'];     // 3
+    const t4Frames = ['#t4_f0', '#t4_f1'];               // 2
+    const t5Frames = ['#t5_f0', '#t5_f1'];               // 2
+    const t6Frames = ['#t6_f0', '#t6_f1'];               // 2 ✅
+    const t0Frames = ['#t0_f0', '#t0_f1', '#t0_f2'];     // 3
+
+    let t0Idx = 0;
+    let t0Timer = null;
+    const T0_FPS = 2;
+
+    function startT0Seq() {
+      if (t0Timer) return;
+
+      [seqA, seqB, seqC, seqD, seqE, seqF, seqG].forEach(p => p && p.setAttribute('visible', true));
+
+      t0Timer = setInterval(() => {
+        t0Idx++;
+
+        seqA?.setAttribute('src', t1Frames[t0Idx % t1Frames.length]);
+        seqB?.setAttribute('src', t2Frames[t0Idx % t2Frames.length]);
+        seqC?.setAttribute('src', t3Frames[t0Idx % t3Frames.length]);
+        seqD?.setAttribute('src', t4Frames[t0Idx % t4Frames.length]);
+        seqE?.setAttribute('src', t5Frames[t0Idx % t5Frames.length]);
+        seqG?.setAttribute('src', t6Frames[t0Idx % t6Frames.length]);
+        seqF?.setAttribute('src', t0Frames[t0Idx % t0Frames.length]);
+
+      }, 1000 / T0_FPS);
+    }
+
+    function stopT0Seq() {
+      if (t0Timer) clearInterval(t0Timer);
+      t0Timer = null;
+      t0Idx = 0;
+
+      seqA?.setAttribute('src', t1Frames[0]);
+      seqB?.setAttribute('src', t2Frames[0]);
+      seqC?.setAttribute('src', t3Frames[0]);
+      seqD?.setAttribute('src', t4Frames[0]);
+      seqE?.setAttribute('src', t5Frames[0]);
+      seqG?.setAttribute('src', t6Frames[0]);
+      seqF?.setAttribute('src', t0Frames[0]);
+
+      [seqA, seqB, seqC, seqD, seqE, seqF, seqG].forEach(p => p && p.setAttribute('visible', false));
+    }
+
+    function setVisible(el, visible) {
+      if (!el) return;
+      el.setAttribute('visible', visible);
+    }
+
+    function showThumb(i) {
+      setVisible(thumbPlanes[i], true);
+      if (videoPlanes[i]) setVisible(videoPlanes[i], false);
+
+      if (i === 0) startT0Seq();
+      else stopT0Seq();
+    }
+
+    function showVideo(i) {
+      setVisible(thumbPlanes[i], false);
+      if (videoPlanes[i]) setVisible(videoPlanes[i], true);
+
+      if (i === 0) stopT0Seq();
+    }
+
+    // init: show thumbs; keep target0 seq hidden until targetFound
+    for (let i = 0; i < 11; i++) showThumb(i);
+    stopT0Seq();
+
+    // iOS unlock
+    let unlocked = false;
+
+    async function unlockVideos() {
+      if (unlocked) return;
+      unlocked = true;
+
+      for (const v of videos) {
+        if (!v) continue;
+        try {
+          await v.play();
+          v.pause();
+          v.currentTime = 0;
+        } catch (e) {}
+      }
+
+      btn.style.animation = 'none';
+      btn.style.opacity = '0';
+      btn.style.pointerEvents = 'none';
+      setTimeout(() => {
+        if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
+      }, 220);
+    }
+
+    btn.addEventListener('click', unlockVideos, { once: true });
+
+    targets.forEach((targetEl, i) => {
+      if (!targetEl) return;
+
+      // ✅ Target 0 = sequence only (no video play)
+      if (i === 0) {
+        targetEl.addEventListener('targetFound', () => {
+          if (!unlocked) return;
+          showThumb(0);     // starts seq
+        });
+        targetEl.addEventListener('targetLost', () => {
+          stopT0Seq();
+          setVisible(thumbPlanes[0], true);
+        });
+        return;
+      }
+
+      // Targets 1..10 = thumb + video
+      const v = videos[i];
+
+      if (v) {
+        v.addEventListener('playing', () => showVideo(i));
+        v.addEventListener('pause',   () => showThumb(i));
+        v.addEventListener('ended',   () => showThumb(i));
+      }
+
+      targetEl.addEventListener('targetFound', () => {
+        if (!unlocked) return;
+
+        showThumb(i);
+
+        try {
+          if (!v) return;
+          v.currentTime = 0;
+          v.play().catch(() => {});
+        } catch (e) {}
+      });
+
+      targetEl.addEventListener('targetLost', () => {
+        try {
+          if (!v) return;
+          v.pause();
+          v.currentTime = 0;
+        } catch (e) {}
+        showThumb(i);
+      });
+    });
+  </script>
+
+</body>
+</html>
