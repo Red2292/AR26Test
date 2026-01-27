@@ -46,67 +46,42 @@
     <img id="thumb9" src="./assets/Van-Thumb.png" />
     <img id="thumb10" src="./assets/Xo-Thumb.png" />
 
-    <!-- videos (preload none to speed up initial load) -->
-    <video id="vid0" src="./assets/phoma01.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid1" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid2" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid3" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid4" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid5" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid6" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid7" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid8" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid9" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
-    <video id="vid10" src="./assets/target.mp4" preload="none" loop muted playsinline></video>
+    <!-- videos -->
+    <video id="vid0" src="./assets/phoma01.mp4" loop muted playsinline></video>
+    <video id="vid1" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid2" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid3" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid4" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid5" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid6" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid7" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid8" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid9" src="./assets/target.mp4" loop muted playsinline></video>
+    <video id="vid10" src="./assets/target.mp4" loop muted playsinline></video>
 
     <!-- sequence used for TARGET 0 -->
-    <img id="t1_f0" src="./assets/t1-seq/frame_000.png" />
-    <img id="t1_f1" src="./assets/t1-seq/frame_001.png" />
-
-    <!-- sequence used for TARGET 2 -->
-    <img id="t2_f0" src="./assets/t2-seq/frame_000.png" />
-    <img id="t2_f1" src="./assets/t2-seq/frame_001.png" />
+    <img id="t0_f0" src="./assets/t1-seq/frame_000.png" />
+    <img id="t0_f1" src="./assets/t1-seq/frame_001.png" />
   </a-assets>
 
   <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
   <!-- TARGET 0 -->
   <a-entity id="t0" mindar-image-target="targetIndex: 0">
-    <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.001" width="1" height="2"
+    <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.09" width="1" height="2"
       material="shader:flat; transparent:true"></a-image>
 
-    <a-image id="seqPlane0" src="#t1_f0" position="0 0 0.010" width="1" height="2"
+    <a-image id="seqPlane0" src="#t0_f0" position="0 0 0.095" width="1" height="2"
       material="shader:flat; transparent:true; depthWrite:false"
       visible="false"></a-image>
-    <a-image id="seqPlane2" src="#t2_f0" position="0 0 0.020" width="1" height="2"
-      material="shader:flat; transparent:true; depthWrite:false"
-      visible="false"></a-image>
-    
 
     <a-video id="videoPlane0" src="#vid0" position="0 0 0.1" width="1" height="2"
       material="shader:flat" visible="false"></a-video>
   </a-entity>
 
-  <!-- TARGET 1 -->
-  <a-entity id="t1" mindar-image-target="targetIndex:1">
-    <a-image id="thumbPlane1" src="#thumb1" position="0 0 0.09" width="1" height="2"
-      material="shader:flat; transparent:true"></a-image>
-    <a-video id="videoPlane1" src="#vid1" position="0 0 0.1" width="1" height="2"
-      material="shader:flat" visible="false"></a-video>
-  </a-entity>
-
-  <!-- TARGET 2 (thumb + seq + video) -->
-  <a-entity id="t2" mindar-image-target="targetIndex:2">
-    <a-image id="thumbPlane2" src="#thumb2" position="0 0 0.09" width="1" height="2"
-      material="shader:flat; transparent:true"></a-image>
-
-    <a-video id="videoPlane2" src="#vid2" position="0 0 0.1" width="1" height="2"
-      material="shader:flat" visible="false"></a-video>
-  </a-entity>
-
-  <!-- TARGETS 3–10 (normal thumb + video) -->
+  <!-- TARGETS 1–10 (normal thumb + video) -->
   <script>
-    for(let i=3;i<=10;i++){
+    for(let i=1;i<=10;i++){
       document.write(`
         <a-entity id="t${i}" mindar-image-target="targetIndex:${i}">
           <a-image id="thumbPlane${i}" src="#thumb${i}" position="0 0 0.09" width="1" height="2"
@@ -125,13 +100,11 @@ const videos = [...Array(11)].map((_,i)=>document.getElementById(`vid${i}`));
 const thumbs = [...Array(11)].map((_,i)=>document.getElementById(`thumbPlane${i}`));
 const videoPlanes = [...Array(11)].map((_,i)=>document.getElementById(`videoPlane${i}`));
 
-/* ===== sequences ===== */
-const FPS = 2;
-
-/* T0 */
+/* ===== T0 sequence ===== */
 const seqPlane0 = document.getElementById('seqPlane0');
 const t0Frames = ['#t0_f0','#t0_f1'];
 let t0Idx=0, t0Timer=null;
+const FPS=2;
 
 function startT0Seq(){
   if(t0Timer) return;
@@ -147,45 +120,22 @@ function stopT0Seq(){
   seqPlane0.setAttribute('visible',false);
 }
 
-/* T2 */
-const seqPlane2 = document.getElementById('seqPlane2');
-const t2Frames = ['#t2_f0','#t2_f1'];
-let t2Idx=0, t2Timer=null;
-
-function startT2Seq(){
-  if(t2Timer) return;
-  seqPlane2.setAttribute('visible',true);
-  t2Timer=setInterval(()=>{
-    t2Idx=(t2Idx+1)%t2Frames.length;
-    seqPlane2.setAttribute('src',t2Frames[t2Idx]);
-  },1000/FPS);
-}
-function stopT2Seq(){
-  clearInterval(t2Timer); t2Timer=null; t2Idx=0;
-  seqPlane2.setAttribute('src',t2Frames[0]);
-  seqPlane2.setAttribute('visible',false);
-}
-
 /* ===== UI helpers ===== */
 function showThumb(i){
   thumbs[i].setAttribute('visible',true);
   videoPlanes[i]?.setAttribute('visible',false);
-
   if(i===0) startT0Seq(); else stopT0Seq();
-  if(i===2) startT2Seq(); else stopT2Seq();
 }
 function showVideo(i){
   thumbs[i].setAttribute('visible',false);
   videoPlanes[i]?.setAttribute('visible',true);
-
   if(i===0) stopT0Seq();
-  if(i===2) stopT2Seq();
 }
 
 /* unlock */
 btn.onclick=async()=>{
   for(const v of videos){
-    try{ await v.play(); v.pause(); v.currentTime=0; }catch(e){}
+    try{await v.play();v.pause();v.currentTime=0}catch{}
   }
   btn.remove();
 };
@@ -194,19 +144,15 @@ btn.onclick=async()=>{
 for(let i=0;i<=10;i++){
   const t=document.getElementById(`t${i}`);
   const v=videos[i];
-
   t.addEventListener('targetFound',()=>{
     showThumb(i);
-    if(v){ v.currentTime=0; v.play().catch(()=>{}); }
+    if(v){v.currentTime=0;v.play().catch(()=>{})}
   });
-
   t.addEventListener('targetLost',()=>{
-    if(v){ v.pause(); v.currentTime=0; }
+    if(v){v.pause();v.currentTime=0}
     showThumb(i);
   });
 }
 </script>
 </body>
 </html>
-
-
