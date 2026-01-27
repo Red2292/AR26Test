@@ -6,47 +6,27 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    #startBtn {
-      position: fixed;
-      z-index: 9999;
-      left: 50%;
-      bottom: 24px;
-      transform: translateX(-50%);
-
-      padding: 16px 26px;
-      border-radius: 14px;
-      border: none;
-
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-
-      color: #fff;
-      background: linear-gradient(135deg, #ff7a18, #ff3d81);
-      box-shadow: 0 10px 28px rgba(0,0,0,0.35);
-
-      cursor: pointer;
-      animation: pulse 1.8s infinite;
-      -webkit-tap-highlight-color: transparent;
-
-      transition: opacity 200ms ease;
+    #startBtn{
+      position:fixed; z-index:9999;
+      left:50%; bottom:24px; transform:translateX(-50%);
+      padding:16px 26px; border-radius:14px; border:none;
+      font-size:16px; font-weight:800; letter-spacing:.4px; text-transform:uppercase;
+      color:#fff; background:linear-gradient(135deg,#ff7a18,#ff3d81);
+      box-shadow:0 10px 28px rgba(0,0,0,.35);
+      cursor:pointer; animation:pulse 1.8s infinite;
+      -webkit-tap-highlight-color:transparent;
+      transition:opacity 200ms ease;
     }
-
-    @keyframes pulse {
-      0%   { transform: translateX(-50%) scale(1); }
-      50%  { transform: translateX(-50%) scale(1.06); }
-      100% { transform: translateX(-50%) scale(1); }
+    @keyframes pulse{
+      0%{transform:translateX(-50%) scale(1);}
+      50%{transform:translateX(-50%) scale(1.06);}
+      100%{transform:translateX(-50%) scale(1);}
     }
-
-    #startBtn:active {
-      transform: translateX(-50%) scale(0.97);
-    }
+    #startBtn:active{transform:translateX(-50%) scale(.97);}
   </style>
 </head>
 
 <body style="margin:0; overflow:hidden;">
-
   <button id="startBtn" type="button">Tap to Start</button>
 
   <a-scene
@@ -71,8 +51,7 @@
       <img id="thumb10" src="./assets/Xo-Thumb.png" crossorigin="anonymous" />
       <img id="frameImg" src="./assets/frame.png" crossorigin="anonymous" />
 
-
-      <!-- videos -->
+      <!-- videos (targets 1..10 use these) -->
       <video id="vid0"  src="./assets/phoma01.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid1"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid2"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
@@ -85,67 +64,68 @@
       <video id="vid9"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid10" src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
 
-      <!-- PNG sequences (AS YOU CURRENTLY HAVE) -->
-      <!-- t0-seq (3 frames) -->
+      <!-- PNG sequences you actually loaded -->
+      <!-- t0 (3 frames) -->
       <img id="t0_f0" src="./assets/t0-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t0_f1" src="./assets/t0-seq/frame_001.png" crossorigin="anonymous" />
       <img id="t0_f2" src="./assets/t0-seq/frame_002.png" crossorigin="anonymous" />
 
-      <!-- t1-seq (2 frames) -->
+      <!-- t1 (2 frames) -->
       <img id="t1_f0" src="./assets/t1-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t1_f1" src="./assets/t1-seq/frame_001.png" crossorigin="anonymous" />
 
-      <!-- t2-seq (2 frames) -->
+      <!-- t2 (2 frames) -->
       <img id="t2_f0" src="./assets/t2-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t2_f1" src="./assets/t2-seq/frame_001.png" crossorigin="anonymous" />
 
-      <!-- t3-seq (3 frames) -->
+      <!-- t3 (3 frames) -->
       <img id="t3_f0" src="./assets/t3-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t3_f1" src="./assets/t3-seq/frame_001.png" crossorigin="anonymous" />
       <img id="t3_f2" src="./assets/t3-seq/frame_002.png" crossorigin="anonymous" />
 
-      <!-- t4-seq (2 frames) -->
+      <!-- t4 (2 frames) -->
       <img id="t4_f0" src="./assets/t4-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t4_f1" src="./assets/t4-seq/frame_001.png" crossorigin="anonymous" />
 
-      <!-- t5-seq (2 frames) -->
+      <!-- t5 (2 frames) -->
       <img id="t5_f0" src="./assets/t5-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t5_f1" src="./assets/t5-seq/frame_001.png" crossorigin="anonymous" />
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
-    <!-- Target 0 -->
+    <!-- =======================
+         TARGET 0: 6-layer PNG sequence + optional frame + base thumb
+         (No video shown for target 0)
+         NOTE: for now, all 6 layers animate using t0_f0..t0_f2 you already loaded.
+         ======================= -->
     <a-entity id="t0" mindar-image-target="targetIndex: 0">
+      <!-- base thumb (shown when target0 found) -->
       <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.085" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
 
-<a-image id="framePlane0" src="#frameImg" position="0 0 0.118" width="1" height="2"
-         material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+      <!-- overlay frame -->
+      <a-image id="framePlane0" src="#frameImg" position="0 0 0.118" width="1" height="2"
+               material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
 
-
-  <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.085" width="1" height="2"
-           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
-
-  <!-- 6 PNG sequence layers (set correct src + z order) -->
-  <a-image id="t0_seqPlane_0" src="#t0_l0_f0" position="0 0 0.090" width="1" height="2"
-           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
-
-  <a-image id="t0_seqPlane_1" src="#t0_l1_f0" position="0 0 0.095" width="1" height="2"
-           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
-
-  <a-image id="t0_seqPlane_2" src="#t0_l2_f0" position="0 0 0.100" width="1" height="2"
-           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
-
-  <a-image id="t0_seqPlane_3" src="#t0_l3_f0" position="0 0 0.105" width="1" height="2"
-           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
-
-  <a-image id="t0_seqPlane_4" src="#t0_l4_f0" position="0 0 0.110" width="1" height="2"
-           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
-
-  <a-image id="t0_seqPlane_5" src="#t0_l5_f0" position="0 0 0.115" width="1" height="2"
-           material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+      <!-- 6 sequence layers -->
+      <a-image id="t0_seqPlane_0" src="#t0_f0" position="0 0 0.090" width="1" height="2"
+               material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+      <a-image id="t0_seqPlane_1" src="#t0_f0" position="0 0 0.095" width="1" height="2"
+               material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+      <a-image id="t0_seqPlane_2" src="#t0_f0" position="0 0 0.100" width="1" height="2"
+               material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+      <a-image id="t0_seqPlane_3" src="#t0_f0" position="0 0 0.105" width="1" height="2"
+               material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+      <a-image id="t0_seqPlane_4" src="#t0_f0" position="0 0 0.110" width="1" height="2"
+               material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
+      <a-image id="t0_seqPlane_5" src="#t0_f0" position="0 0 0.115" width="1" height="2"
+               material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
     </a-entity>
+
+    <!-- =======================
+         TARGETS 1..10: thumb + (optional) sequence overlay + video
+         ======================= -->
 
     <!-- Target 1 -->
     <a-entity id="t1" mindar-image-target="targetIndex: 1">
@@ -197,12 +177,10 @@
                material="shader: flat" visible="false"></a-video>
     </a-entity>
 
-    <!-- Target 6 (NO seq assets loaded yet -> keep plane but hidden & disabled in JS) -->
+    <!-- Target 6 (no sequence frames configured; thumb + video only) -->
     <a-entity id="t6" mindar-image-target="targetIndex: 6">
       <a-image id="thumbPlane6" src="#thumb6" position="0 0 0.09" width="1" height="2"
                material="shader: flat; transparent: true; alphaTest: 0.01"></a-image>
-      <a-image id="t6_seqPlane" src="#thumb6" position="0 0 0.095" width="1" height="2"
-               material="shader: flat; transparent: true; alphaTest: 0.01" visible="false"></a-image>
       <a-video id="videoPlane6" src="#vid6" position="0 0 0.1" width="1" height="2"
                material="shader: flat" visible="false"></a-video>
     </a-entity>
@@ -239,250 +217,242 @@
   </a-scene>
 
   <script>
-<script>
-  const btn = document.getElementById('startBtn');
+    const btn = document.getElementById('startBtn');
 
-  const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
-  const videos  = Array.from({ length: 11 }, (_, i) => document.getElementById(`vid${i}`)); // vid0 vẫn có nhưng không dùng cho target 0
+    const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
+    const videos  = Array.from({ length: 11 }, (_, i) => document.getElementById(`vid${i}`));
 
-  const thumbPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`thumbPlane${i}`));
-  const videoPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`videoPlane${i}`)); // videoPlane0 sẽ null => ok
+    const thumbPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`thumbPlane${i}`));
+    const videoPlanes = Array.from({ length: 11 }, (_, i) => document.getElementById(`videoPlane${i}`)); // videoPlane0 is null => ok
 
-  // ===== Target 0: 6 PNG sequence layers (no video) =====
-  const t0FramePlane = document.getElementById('framePlane0'); // optional overlay frame
-  const t0Planes = [
-    document.getElementById('t0_seqPlane_0'),
-    document.getElementById('t0_seqPlane_1'),
-    document.getElementById('t0_seqPlane_2'),
-    document.getElementById('t0_seqPlane_3'),
-    document.getElementById('t0_seqPlane_4'),
-    document.getElementById('t0_seqPlane_5'),
-  ];
+    function setVisible(el, visible) {
+      if (!el) return;
+      el.setAttribute('visible', visible);
+    }
 
-  // IMPORTANT: update these to match assets you actually loaded
-  // If you haven't loaded t0_lX_fY yet, temporarily use t0_f0..f2 for all layers (demo)
-  const t0LayersFrames = [
-    ['#t0_f0', '#t0_f1', '#t0_f2'],
-    ['#t0_f0', '#t0_f1', '#t0_f2'],
-    ['#t0_f0', '#t0_f1', '#t0_f2'],
-    ['#t0_f0', '#t0_f1', '#t0_f2'],
-    ['#t0_f0', '#t0_f1', '#t0_f2'],
-    ['#t0_f0', '#t0_f1', '#t0_f2'],
-  ];
+    // ===== Target 0: 6-layer PNG sequence (no video) =====
+    const t0FramePlane = document.getElementById('framePlane0');
+    const t0Planes = [
+      document.getElementById('t0_seqPlane_0'),
+      document.getElementById('t0_seqPlane_1'),
+      document.getElementById('t0_seqPlane_2'),
+      document.getElementById('t0_seqPlane_3'),
+      document.getElementById('t0_seqPlane_4'),
+      document.getElementById('t0_seqPlane_5'),
+    ];
 
-  let t0Index = 0;
-  let t0Timer = null;
-  const T0_FPS = 6;
+    // For now: animate all 6 layers using the 3 frames you actually loaded (t0_f0..t0_f2)
+    const t0LayersFrames = [
+      ['#t0_f0', '#t0_f1', '#t0_f2'],
+      ['#t0_f0', '#t0_f1', '#t0_f2'],
+      ['#t0_f0', '#t0_f1', '#t0_f2'],
+      ['#t0_f0', '#t0_f1', '#t0_f2'],
+      ['#t0_f0', '#t0_f1', '#t0_f2'],
+      ['#t0_f0', '#t0_f1', '#t0_f2'],
+    ];
 
-  function startT0Layers() {
-    if (t0Timer) return;
-    if (t0FramePlane) t0FramePlane.setAttribute('visible', true);
+    let t0Index = 0;
+    let t0Timer = null;
+    const T0_FPS = 6;
 
-    t0Planes.forEach(p => p && p.setAttribute('visible', true));
+    function startT0Layers() {
+      if (t0Timer) return;
 
-    t0Timer = setInterval(() => {
-      t0Index++;
+      // show base thumb for target 0
+      setVisible(thumbPlanes[0], true);
+
+      setVisible(t0FramePlane, true);
+      t0Planes.forEach(p => setVisible(p, true));
+
+      t0Timer = setInterval(() => {
+        t0Index++;
+        for (let l = 0; l < t0Planes.length; l++) {
+          const plane = t0Planes[l];
+          const frames = t0LayersFrames[l];
+          if (!plane || !frames || frames.length === 0) continue;
+          const idx = t0Index % frames.length;
+          plane.setAttribute('src', frames[idx]);
+        }
+      }, 1000 / T0_FPS);
+    }
+
+    function stopT0Layers() {
+      if (t0Timer) clearInterval(t0Timer);
+      t0Timer = null;
+      t0Index = 0;
+
+      setVisible(t0FramePlane, false);
       for (let l = 0; l < t0Planes.length; l++) {
         const plane = t0Planes[l];
         const frames = t0LayersFrames[l];
         if (!plane || !frames || frames.length === 0) continue;
-        const idx = t0Index % frames.length;
-        plane.setAttribute('src', frames[idx]);
+        plane.setAttribute('src', frames[0]);
+        setVisible(plane, false);
       }
-    }, 1000 / T0_FPS);
-  }
 
-  function stopT0Layers() {
-    if (t0Timer) clearInterval(t0Timer);
-    t0Timer = null;
-    t0Index = 0;
-
-    if (t0FramePlane) t0FramePlane.setAttribute('visible', false);
-
-    for (let l = 0; l < t0Planes.length; l++) {
-      const plane = t0Planes[l];
-      const frames = t0LayersFrames[l];
-      if (!plane || !frames || frames.length === 0) continue;
-      plane.setAttribute('src', frames[0]);
-      plane.setAttribute('visible', false);
-    }
-  }
-
-  // ===== Targets 1..5 sequences (as you had) =====
-  const seqPlanes = {
-    1: document.getElementById('t1_seqPlane'),
-    2: document.getElementById('t2_seqPlane'),
-    3: document.getElementById('t3_seqPlane'),
-    4: document.getElementById('t4_seqPlane'),
-    5: document.getElementById('t5_seqPlane'),
-    // 6: none
-  };
-
-  const seqFrames = {
-    1: ['#t1_f0', '#t1_f1'],
-    2: ['#t2_f0', '#t2_f1'],
-    3: ['#t3_f0', '#t3_f1', '#t3_f2'],
-    4: ['#t4_f0', '#t4_f1'],
-    5: ['#t5_f0', '#t5_f1'],
-  };
-
-  const seqFPS = { 1: 2, 2: 2, 3: 4, 4: 2, 5: 2 };
-  const seqState = {};
-
-  function startSequence(i) {
-    const plane = seqPlanes[i];
-    const frames = seqFrames[i];
-    if (!plane || !frames || frames.length === 0) return;
-    if (seqState[i]?.timer) return;
-
-    seqState[i] = seqState[i] || { timer: null, frameIndex: 0 };
-    const fps = seqFPS[i] || 4;
-
-    plane.setAttribute('visible', true);
-    seqState[i].timer = setInterval(() => {
-      seqState[i].frameIndex = (seqState[i].frameIndex + 1) % frames.length;
-      plane.setAttribute('src', frames[seqState[i].frameIndex]);
-    }, 1000 / fps);
-  }
-
-  function stopSequence(i) {
-    const plane = seqPlanes[i];
-    const frames = seqFrames[i];
-    if (!seqState[i]) seqState[i] = { timer: null, frameIndex: 0 };
-
-    if (seqState[i].timer) {
-      clearInterval(seqState[i].timer);
-      seqState[i].timer = null;
-    }
-    seqState[i].frameIndex = 0;
-
-    if (plane && frames && frames.length) {
-      plane.setAttribute('src', frames[0]);
-      plane.setAttribute('visible', false);
-    }
-  }
-
-  function stopAllSequences() {
-    Object.keys(seqPlanes).forEach(k => stopSequence(Number(k)));
-  }
-
-  let unlocked = false;
-
-  function setVisible(el, visible) {
-    if (!el) return;
-    el.setAttribute('visible', visible);
-  }
-
-  function showThumb(i) {
-    // default show thumb, hide video
-    setVisible(thumbPlanes[i], true);
-    setVisible(videoPlanes[i], false);
-
-    // stop other animations
-    stopAllSequences();
-    stopT0Layers();
-
-    if (i === 0) {
-      // target0: no thumb, only 6-layer seq + optional frame overlay
       setVisible(thumbPlanes[0], false);
-      startT0Layers();
-      return;
     }
 
-    // target 1..5 sequence overlay
-    if (i >= 1 && i <= 5) startSequence(i);
-  }
+    // ===== Targets 1..5 sequences =====
+    const seqPlanes = {
+      1: document.getElementById('t1_seqPlane'),
+      2: document.getElementById('t2_seqPlane'),
+      3: document.getElementById('t3_seqPlane'),
+      4: document.getElementById('t4_seqPlane'),
+      5: document.getElementById('t5_seqPlane'),
+    };
 
-  function showVideo(i) {
-    setVisible(thumbPlanes[i], false);
-    setVisible(videoPlanes[i], true);
+    const seqFrames = {
+      1: ['#t1_f0', '#t1_f1'],
+      2: ['#t2_f0', '#t2_f1'],
+      3: ['#t3_f0', '#t3_f1', '#t3_f2'],
+      4: ['#t4_f0', '#t4_f1'],
+      5: ['#t5_f0', '#t5_f1'],
+    };
+
+    const seqFPS = { 1: 2, 2: 2, 3: 4, 4: 2, 5: 2 };
+    const seqState = {};
+
+    function startSequence(i) {
+      const plane = seqPlanes[i];
+      const frames = seqFrames[i];
+      if (!plane || !frames || frames.length === 0) return;
+      if (seqState[i]?.timer) return;
+
+      seqState[i] = seqState[i] || { timer: null, frameIndex: 0 };
+      const fps = seqFPS[i] || 4;
+
+      setVisible(plane, true);
+      seqState[i].timer = setInterval(() => {
+        seqState[i].frameIndex = (seqState[i].frameIndex + 1) % frames.length;
+        plane.setAttribute('src', frames[seqState[i].frameIndex]);
+      }, 1000 / fps);
+    }
+
+    function stopSequence(i) {
+      const plane = seqPlanes[i];
+      const frames = seqFrames[i];
+      if (!seqState[i]) seqState[i] = { timer: null, frameIndex: 0 };
+
+      if (seqState[i].timer) {
+        clearInterval(seqState[i].timer);
+        seqState[i].timer = null;
+      }
+      seqState[i].frameIndex = 0;
+
+      if (plane && frames && frames.length) {
+        plane.setAttribute('src', frames[0]);
+        setVisible(plane, false);
+      }
+    }
+
+    function stopAllSequences() {
+      Object.keys(seqPlanes).forEach(k => stopSequence(Number(k)));
+    }
+
+    let unlocked = false;
+
+    function showThumb(i) {
+      setVisible(thumbPlanes[i], true);
+      setVisible(videoPlanes[i], false);
+
+      stopAllSequences();
+      stopT0Layers();
+
+      if (i === 0) {
+        startT0Layers();
+        return;
+      }
+
+      if (i >= 1 && i <= 5) startSequence(i);
+    }
+
+    function showVideo(i) {
+      setVisible(thumbPlanes[i], false);
+      setVisible(videoPlanes[i], true);
+      stopAllSequences();
+      stopT0Layers();
+    }
+
+    // init: keep everything hidden until a target is found (and videos unlocked)
+    for (let i = 0; i < 11; i++) {
+      setVisible(videoPlanes[i], false);
+      setVisible(thumbPlanes[i], false);
+    }
     stopAllSequences();
     stopT0Layers();
-  }
 
-  // init
-  for (let i = 0; i < 11; i++) {
-    setVisible(videoPlanes[i], false);
-    setVisible(thumbPlanes[i], i !== 0);
-  }
-  stopAllSequences();
-  stopT0Layers();
+    async function unlockVideos() {
+      if (unlocked) return;
+      unlocked = true;
 
-  async function unlockVideos() {
-    if (unlocked) return;
-    unlocked = true;
+      // iOS unlock for targets 1..10 (target 0 is sequence-only)
+      for (let i = 1; i < videos.length; i++) {
+        const v = videos[i];
+        if (!v) continue;
+        try {
+          await v.play();
+          v.pause();
+          v.currentTime = 0;
+        } catch (e) {}
+      }
 
-    // unlock iOS autoplay for videos (targets 1..10)
-    for (let i = 1; i < videos.length; i++) {
+      btn.style.animation = 'none';
+      btn.style.opacity = '0';
+      btn.style.pointerEvents = 'none';
+      setTimeout(() => {
+        if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
+      }, 220);
+    }
+
+    btn.addEventListener('click', unlockVideos, { once: true });
+
+    targets.forEach((targetEl, i) => {
+      if (!targetEl) return;
+
+      // Target 0: sequence only, no video
+      if (i === 0) {
+        targetEl.addEventListener('targetFound', () => {
+          if (!unlocked) return;
+          showThumb(0);
+        });
+        targetEl.addEventListener('targetLost', () => {
+          stopT0Layers();
+        });
+        return;
+      }
+
+      // Targets 1..10: video + thumb/sequence
       const v = videos[i];
-      if (!v) continue;
-      try {
-        await v.play();
-        v.pause();
-        v.currentTime = 0;
-      } catch (e) {}
-    }
 
-    btn.style.animation = 'none';
-    btn.style.opacity = '0';
-    btn.style.pointerEvents = 'none';
-    setTimeout(() => {
-      if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
-    }, 220);
-  }
+      if (v) {
+        v.addEventListener('playing', () => showVideo(i));
+        v.addEventListener('pause',   () => showThumb(i));
+        v.addEventListener('ended',   () => showThumb(i));
+      }
 
-  btn.addEventListener('click', unlockVideos, { once: true });
-
-  targets.forEach((targetEl, i) => {
-    if (!targetEl) return;
-
-    // target 0: sequence only, no video
-    if (i === 0) {
-      targetEl.addEventListener('targetFound', () => {
+      targetEl.addEventListener('targetFound', async () => {
         if (!unlocked) return;
-        showThumb(0);
+
+        showThumb(i);
+
+        try {
+          if (!v) return;
+          v.currentTime = 0;
+          const p = v.play();
+          if (p && typeof p.catch === 'function') p.catch(() => {});
+        } catch (e) {}
       });
+
       targetEl.addEventListener('targetLost', () => {
-        stopT0Layers();
+        try {
+          if (!v) return;
+          v.pause();
+          v.currentTime = 0;
+        } catch (e) {}
+        showThumb(i);
       });
-      return;
-    }
-
-    // targets 1..10: video + seq/thumb
-    const v = videos[i];
-
-    if (v) {
-      v.addEventListener('playing', () => showVideo(i));
-      v.addEventListener('pause',   () => showThumb(i));
-      v.addEventListener('ended',   () => showThumb(i));
-    }
-
-    targetEl.addEventListener('targetFound', async () => {
-      if (!unlocked) return;
-
-      showThumb(i);
-
-      try {
-        if (!v) return;
-        v.currentTime = 0;
-        const p = v.play();
-        if (p && typeof p.catch === 'function') p.catch(() => {});
-      } catch (e) {}
     });
-
-    targetEl.addEventListener('targetLost', () => {
-      try {
-        if (!v) return;
-        v.pause();
-        v.currentTime = 0;
-      } catch (e) {}
-      showThumb(i);
-    });
-  });
-</script>
-
   </script>
 </body>
 </html>
-
-
