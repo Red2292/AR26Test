@@ -85,6 +85,10 @@
       <img id="t5_f0" src="./assets/t5-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t5_f1" src="./assets/t5-seq/frame_001.png" crossorigin="anonymous" />
 
+      <!-- ✅ t6-seq (2 frames) -->
+      <img id="t6_f0" src="./assets/t6-seq/frame_000.png" crossorigin="anonymous" />
+      <img id="t6_f1" src="./assets/t6-seq/frame_001.png" crossorigin="anonymous" />
+
       <!-- ✅ t0-seq (3 frames) -->
       <img id="t0_f0" src="./assets/t0-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t0_f1" src="./assets/t0-seq/frame_001.png" crossorigin="anonymous" />
@@ -94,37 +98,38 @@
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
     <!-- =======================
-         TARGET 0 (thumb + 6 seq layers + video)
+         TARGET 0 (thumb + 7 seq layers)
          ======================= -->
     <a-entity id="t0" mindar-image-target="targetIndex: 0">
-      <!-- base thumb -->
-      <a-image id="thumbPlane0" src="#thumb0" position="0 0 0.090" width="1" height="2"
-        material="shader:flat; transparent:true; alphaTest:0.01"></a-image>
+
 
       <!-- layer A: t1 (2f) -->
       <a-image id="seqPlane0_a" src="#t1_f0" position="0 0 0.094" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
-      
-            <!-- layer B: t2 (2f) -->
-      <a-image id="seqPlane0_b" src="#t2_f0" position="0 0 0.2" width="1" height="2"
+
+      <!-- layer B: t2 (2f) -->
+      <a-image id="seqPlane0_b" src="#t2_f0" position="0 0 0.3" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
-       <!-- ✅ layer E: t5 (2f) -->
-      <a-image id="seqPlane0_e" src="#t5_f0" position="0 0 0.3" width="1" height="2"
+      <!-- ✅ layer E: t5 (2f) -->
+      <a-image id="seqPlane0_e" src="#t5_f0" position="0 0 0.4" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
       <!-- layer C: t3 (3f) -->
-      <a-image id="seqPlane0_c" src="#t3_f0" position="0 0 0.4" width="1" height="2"
+      <a-image id="seqPlane0_c" src="#t3_f0" position="0 0 0.5" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
+
+      <!-- ✅ NEW layer G: t6 (2f) -->
+      <a-image id="seqPlane0_g" src="#t6_f0" position="0 0 0.6" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
       <!-- ✅ layer F: t0 (3f) -->
       <a-image id="seqPlane0_f" src="#t0_f0" position="0 0 0.7" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
-      
-            <!-- layer D: t4 (2f) -->
-      <a-image id="seqPlane0_d" src="#t4_f0" position="0 0 1" width="1" height="2"
-        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
+      <!-- layer D: t4 (2f) -->
+      <a-image id="seqPlane0_d" src="#t4_f0" position="0 0 0.9" width="1" height="2"
+        material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
     </a-entity>
 
     <!-- =======================
@@ -218,6 +223,7 @@
     const seqD = document.getElementById('seqPlane0_d'); // t4
     const seqE = document.getElementById('seqPlane0_e'); // t5 ✅
     const seqF = document.getElementById('seqPlane0_f'); // t0 ✅
+    const seqG = document.getElementById('seqPlane0_g'); // t6 ✅ NEW
 
     // Frames
     const t1Frames = ['#t1_f0', '#t1_f1'];               // 2
@@ -225,6 +231,7 @@
     const t3Frames = ['#t3_f0', '#t3_f1', '#t3_f2'];     // 3
     const t4Frames = ['#t4_f0', '#t4_f1'];               // 2
     const t5Frames = ['#t5_f0', '#t5_f1'];               // 2 ✅
+    const t6Frames = ['#t6_f0', '#t6_f1'];               // 2 ✅ NEW
     const t0Frames = ['#t0_f0', '#t0_f1', '#t0_f2'];     // 3 ✅
 
     let t0Idx = 0;
@@ -234,7 +241,7 @@
     function startT0Seq() {
       if (t0Timer) return;
 
-      [seqA, seqB, seqC, seqD, seqE, seqF].forEach(p => p && p.setAttribute('visible', true));
+      [seqA, seqB, seqC, seqD, seqE, seqF, seqG].forEach(p => p && p.setAttribute('visible', true));
 
       t0Timer = setInterval(() => {
         t0Idx++;
@@ -244,6 +251,7 @@
         seqC?.setAttribute('src', t3Frames[t0Idx % t3Frames.length]);
         seqD?.setAttribute('src', t4Frames[t0Idx % t4Frames.length]);
         seqE?.setAttribute('src', t5Frames[t0Idx % t5Frames.length]);
+        seqG?.setAttribute('src', t6Frames[t0Idx % t6Frames.length]); // ✅ NEW
         seqF?.setAttribute('src', t0Frames[t0Idx % t0Frames.length]);
 
       }, 1000 / T0_FPS);
@@ -259,9 +267,10 @@
       seqC?.setAttribute('src', t3Frames[0]);
       seqD?.setAttribute('src', t4Frames[0]);
       seqE?.setAttribute('src', t5Frames[0]);
+      seqG?.setAttribute('src', t6Frames[0]); // ✅ NEW
       seqF?.setAttribute('src', t0Frames[0]);
 
-      [seqA, seqB, seqC, seqD, seqE, seqF].forEach(p => p && p.setAttribute('visible', false));
+      [seqA, seqB, seqC, seqD, seqE, seqF, seqG].forEach(p => p && p.setAttribute('visible', false));
     }
 
     function setVisible(el, visible) {
@@ -349,8 +358,3 @@
 
 </body>
 </html>
-
-
-
-
-
