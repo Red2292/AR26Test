@@ -356,19 +356,23 @@
       el.setAttribute('visible', visible);
     }
 
+    // ✅ FIXED: target 0 is SEQUENCE ONLY (never video)
     function showThumb(i) {
+      if (i === 0) {
+        startT0Seq();
+        return;
+      }
       setVisible(thumbPlanes[i], true);
       setVisible(videoPlanes[i], false);
-
-      if (i === 0) startT0Seq();
-      else stopT0Seq();
     }
 
     function showVideo(i) {
+      if (i === 0) {
+        startT0Seq();
+        return;
+      }
       setVisible(thumbPlanes[i], false);
       setVisible(videoPlanes[i], true);
-
-      if (i === 0) stopT0Seq();
     }
 
     // init: show thumbs; keep target0 seq hidden until targetFound
@@ -401,10 +405,26 @@
 
     btn.addEventListener('click', unlockVideos, { once: true });
 
+    // ✅ FIXED: target 0 has NO video autoplay / swap logic
     targets.forEach((targetEl, i) => {
       if (!targetEl) return;
       const v = videos[i];
 
+      // Target 0: sequence only
+      if (i === 0) {
+        targetEl.addEventListener('targetFound', () => {
+          if (!unlocked) return;
+          startT0Seq();
+        });
+
+        targetEl.addEventListener('targetLost', () => {
+          stopT0Seq();
+        });
+
+        return; // IMPORTANT: skip video listeners for target 0
+      }
+
+      // Targets 1..10: normal thumb <-> video behavior
       if (v) {
         v.addEventListener('playing', () => showVideo(i));
         v.addEventListener('pause',   () => showThumb(i));
@@ -511,4 +531,3 @@
 
 </body>
 </html>
-
