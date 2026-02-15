@@ -55,6 +55,12 @@
       color:rgba(255,255,255,.85);
       letter-spacing:.4px;
     }
+    /* ✅ MB / Total label */
+    #mb{
+      margin-top:6px;
+      font:700 12px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:rgba(255,255,255,.65);
+    }
 
     /* ===== Start button ===== */
     #startBtn{
@@ -87,6 +93,7 @@
       <p id="loadingSub">Please wait…</p>
       <div id="barWrap"><div id="bar"></div></div>
       <div id="pct">0%</div>
+      <div id="mb">0 / 0 MB</div>
     </div>
   </div>
 
@@ -115,15 +122,15 @@
       <!-- videos (✅ SOUND ENABLED: removed muted) -->
       <video id="vid0"  src="./assets/phoma01.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid1"  src="./assets/Bao.mp4"   preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid2"  src="./assets/Dien.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid3"  src="./assets/Dung.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid4"  src="./assets/Duy.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid5"  src="./assets/Kiet.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid2"  src="./assets/Dien.mp4"  preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid3"  src="./assets/Dung.mp4"  preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid4"  src="./assets/Duy.mp4"   preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid5"  src="./assets/Kiet.mp4"  preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid6"  src="./assets/Minh.mp4"  preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
       <video id="vid7"  src="./assets/Phong.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid8"  src="./assets/Tin.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid9"  src="./assets/Van.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid10" src="./assets/Xo.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid8"  src="./assets/Tin.mp4"   preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid9"  src="./assets/Van.mp4"   preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid10" src="./assets/Xo.mp4"    preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
 
       <!-- ===== Sequences used for TARGET 0 layers ===== -->
 
@@ -277,6 +284,7 @@
     const loadingOverlay = document.getElementById('loadingOverlay');
     const bar = document.getElementById('bar');
     const pct = document.getElementById('pct');
+    const mbEl = document.getElementById('mb');
 
     const videos  = Array.from({ length: 11 }, (_, i) => document.getElementById(`vid${i}`));
     const targets = Array.from({ length: 11 }, (_, i) => document.getElementById(`t${i}`));
@@ -297,7 +305,7 @@
     const t1Frames = ['#t1_f0', '#t1_f1'];               // 2
     const t2Frames = ['#t2_f0', '#t2_f1'];               // 2
     const t3Frames = ['#t3_f0', '#t3_f1', '#t3_f2'];     // 3
-    const t4Frames = [                                  // 10
+    const t4Frames = [
       '#t4_f0', '#t4_f1', '#t4_f2', '#t4_f3', '#t4_f4',
       '#t4_f5', '#t4_f6', '#t4_f7', '#t4_f8', '#t4_f9'
     ];
@@ -349,21 +357,15 @@
       el.setAttribute('visible', visible);
     }
 
-    // ✅ FIXED: target 0 is SEQUENCE ONLY (never video)
+    // ✅ target 0 is SEQUENCE ONLY (never video)
     function showThumb(i) {
-      if (i === 0) {
-        startT0Seq();
-        return;
-      }
+      if (i === 0) { startT0Seq(); return; }
       setVisible(thumbPlanes[i], true);
       setVisible(videoPlanes[i], false);
     }
 
     function showVideo(i) {
-      if (i === 0) {
-        startT0Seq();
-        return;
-      }
+      if (i === 0) { startT0Seq(); return; }
       setVisible(thumbPlanes[i], false);
       setVisible(videoPlanes[i], true);
     }
@@ -402,7 +404,7 @@
 
     btn.addEventListener('click', unlockVideos, { once: true });
 
-    // ✅ FIXED: target 0 has NO video autoplay / swap logic
+    // Targets behavior
     targets.forEach((targetEl, i) => {
       if (!targetEl) return;
       const v = videos[i];
@@ -413,15 +415,11 @@
           if (!unlocked) return;
           startT0Seq();
         });
-
-        targetEl.addEventListener('targetLost', () => {
-          stopT0Seq();
-        });
-
-        return; // IMPORTANT: skip video listeners for target 0
+        targetEl.addEventListener('targetLost', () => stopT0Seq());
+        return;
       }
 
-      // Targets 1..10: normal thumb <-> video behavior
+      // Targets 1..10: thumb <-> video
       if (v) {
         v.addEventListener('playing', () => showVideo(i));
         v.addEventListener('pause',   () => showThumb(i));
@@ -452,82 +450,112 @@
       });
     });
 
-    // ===== ✅ Loading bar logic =====
-    function setProgress(done, total) {
-      const p = total ? Math.round((done / total) * 100) : 0;
+    // ===== ✅ GitHub Pages-friendly MB / Total download progress =====
+    function fmtMB(bytes){ return (bytes / (1024 * 1024)).toFixed(1); }
+
+    function setProgressBytes(loaded, total){
+      const p = total ? Math.round((loaded / total) * 100) : 0;
       bar.style.width = `${p}%`;
       pct.textContent = `${p}%`;
+      if (mbEl){
+        mbEl.textContent = total
+          ? `${fmtMB(loaded)} / ${fmtMB(total)} MB`
+          : `${fmtMB(loaded)} MB`;
+      }
     }
 
-    function waitAsset(el) {
-      return new Promise((resolve) => {
-        if (!el) return resolve();
+    async function fetchWithProgress(url, onChunk){
+      const res = await fetch(url, { cache: 'no-store' });
+      const total = Number(res.headers.get('Content-Length')) || 0;
 
-        const tag = el.tagName.toLowerCase();
+      if (!res.body || !res.body.getReader){
+        const blob = await res.blob();
+        onChunk(blob.size, blob.size);
+        return { blob, total: blob.size };
+      }
 
-        // Images
-        if (tag === 'img') {
-          if (el.complete && el.naturalWidth > 0) return resolve();
-          const onDone = () => { cleanup(); resolve(); };
-          const onErr  = () => { cleanup(); resolve(); }; // don't block forever
-          const cleanup = () => {
-            el.removeEventListener('load', onDone);
-            el.removeEventListener('error', onErr);
-          };
-          el.addEventListener('load', onDone, { once: true });
-          el.addEventListener('error', onErr, { once: true });
-          return;
-        }
+      const reader = res.body.getReader();
+      let loaded = 0;
+      const chunks = [];
 
-        // Videos
-        if (tag === 'video') {
-          // If metadata already loaded, good enough for "ready"
-          if (el.readyState >= 1) return resolve(); // HAVE_METADATA
-          const onDone = () => { cleanup(); resolve(); };
-          const onErr  = () => { cleanup(); resolve(); };
-          const cleanup = () => {
-            el.removeEventListener('loadedmetadata', onDone);
-            el.removeEventListener('error', onErr);
-          };
-          el.addEventListener('loadedmetadata', onDone, { once: true });
-          el.addEventListener('error', onErr, { once: true });
-          // Kick preload in some mobile browsers
-          try { el.load(); } catch(e) {}
-          return;
-        }
+      while (true){
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        loaded += value.byteLength;
+        onChunk(loaded, total);
+      }
 
-        // Fallback
-        resolve();
-      });
+      const blob = new Blob(chunks, { type: res.headers.get('Content-Type') || 'application/octet-stream' });
+      return { blob, total: total || blob.size };
     }
 
     async function runLoading() {
-      // Collect all assets inside <a-assets>
       const assetsRoot = document.querySelector('a-assets');
       const allAssets = assetsRoot ? Array.from(assetsRoot.querySelectorAll('img, video')) : [];
 
-      let done = 0;
-      const total = allAssets.length || 1;
-      setProgress(done, total);
+      const items = allAssets
+        .map(el => ({ el, url: el.getAttribute('src') }))
+        .filter(x => x.url && !x.url.startsWith('#'));
 
-      // Wait each asset; update bar
-      for (const a of allAssets) {
-        await waitAsset(a);
-        done++;
-        setProgress(done, total);
+      let loadedBytes = 0;
+      let totalBytes = 0;
+
+      setProgressBytes(0, 0);
+
+      for (const { el, url } of items){
+        let last = 0;
+        let countedTotalForThisFile = false;
+
+        const { blob, total } = await fetchWithProgress(url, (loaded, t) => {
+          if (!countedTotalForThisFile && t){
+            totalBytes += t;
+            countedTotalForThisFile = true;
+          }
+
+          const delta = loaded - last;
+          last = loaded;
+          loadedBytes += Math.max(0, delta);
+
+          setProgressBytes(loadedBytes, totalBytes);
+        });
+
+        // If no Content-Length, estimate total using blob.size
+        if (!countedTotalForThisFile) {
+          totalBytes += blob.size;
+          setProgressBytes(loadedBytes, totalBytes);
+        }
+
+        const objUrl = URL.createObjectURL(blob);
+
+        if (el.tagName.toLowerCase() === 'img') {
+          el.setAttribute('src', objUrl);
+          await new Promise(res => {
+            if (el.complete && el.naturalWidth > 0) return res();
+            el.addEventListener('load', res, { once: true });
+            el.addEventListener('error', res, { once: true });
+          });
+        } else if (el.tagName.toLowerCase() === 'video') {
+          el.src = objUrl;
+          el.load();
+          await new Promise(res => {
+            if (el.readyState >= 1) return res();
+            el.addEventListener('loadedmetadata', res, { once: true });
+            el.addEventListener('error', res, { once: true });
+          });
+        }
       }
 
-      // Small delay so 100% feels stable
+      setProgressBytes(totalBytes || loadedBytes, totalBytes || loadedBytes);
+
       setTimeout(() => {
         if (loadingOverlay) loadingOverlay.style.display = 'none';
-        btn.style.display = 'block'; // ✅ show Tap to Start only after loaded
+        btn.style.display = 'block'; // show Tap to Start after downloads complete
       }, 150);
     }
 
-    // Start loading after DOM is ready
     window.addEventListener('load', runLoading, { once: true });
   </script>
 
 </body>
 </html>
-
