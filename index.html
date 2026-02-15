@@ -112,18 +112,18 @@
       <img id="thumb9"  src="./assets/Van-Thumb.png" crossorigin="anonymous" />
       <img id="thumb10" src="./assets/Xo-Thumb.png" crossorigin="anonymous" />
 
-      <!-- videos -->
-      <video id="vid0"  src="./assets/phoma01.mp4" preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid1"  src="./assets/Bao.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid2"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid3"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid4"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid5"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid6"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid7"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid8"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid9"  src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      <video id="vid10" src="./assets/target.mp4"  preload="auto" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <!-- videos (✅ SOUND ENABLED: removed muted) -->
+      <video id="vid0"  src="./assets/phoma01.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid1"  src="./assets/Bao.mp4"   preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid2"  src="./assets/target.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid3"  src="./assets/target.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid4"  src="./assets/target.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid5"  src="./assets/target.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid6"  src="./assets/Minh.mp4"  preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid7"  src="./assets/target.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid8"  src="./assets/target.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid9"  src="./assets/target.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+      <video id="vid10" src="./assets/target.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
 
       <!-- ===== Sequences used for TARGET 0 layers ===== -->
 
@@ -140,7 +140,7 @@
       <img id="t3_f1" src="./assets/t3-seq/frame_001.png" crossorigin="anonymous" />
       <img id="t3_f2" src="./assets/t3-seq/frame_002.png" crossorigin="anonymous" />
 
-      <!-- ✅ t4-seq (10 frames) -->
+      <!-- t4-seq (10 frames) -->
       <img id="t4_f0" src="./assets/t4-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t4_f1" src="./assets/t4-seq/frame_001.png" crossorigin="anonymous" />
       <img id="t4_f2" src="./assets/t4-seq/frame_002.png" crossorigin="anonymous" />
@@ -152,15 +152,15 @@
       <img id="t4_f8" src="./assets/t4-seq/frame_008.png" crossorigin="anonymous" />
       <img id="t4_f9" src="./assets/t4-seq/frame_009.png" crossorigin="anonymous" />
 
-      <!-- ✅ t5-seq (2 frames) -->
+      <!-- t5-seq (2 frames) -->
       <img id="t5_f0" src="./assets/t5-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t5_f1" src="./assets/t5-seq/frame_001.png" crossorigin="anonymous" />
 
-      <!-- ✅ t6-seq (2 frames) -->
+      <!-- t6-seq (2 frames) -->
       <img id="t6_f0" src="./assets/t6-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t6_f1" src="./assets/t6-seq/frame_001.png" crossorigin="anonymous" />
 
-      <!-- ✅ t0-seq (3 frames) -->
+      <!-- t0-seq (3 frames) -->
       <img id="t0_f0" src="./assets/t0-seq/frame_000.png" crossorigin="anonymous" />
       <img id="t0_f1" src="./assets/t0-seq/frame_001.png" crossorigin="anonymous" />
       <img id="t0_f2" src="./assets/t0-seq/frame_002.png" crossorigin="anonymous" />
@@ -173,31 +173,24 @@
          ======================= -->
     <a-entity id="t0" mindar-image-target="targetIndex: 0">
 
-      <!-- layer A: t1 (2f) -->
       <a-image id="seqPlane0_a" src="#t1_f0" position="0 0 0.094" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
-      <!-- layer B: t2 (2f) -->
       <a-image id="seqPlane0_b" src="#t2_f0" position="0 0 0.2" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
-      <!-- ✅ layer E: t5 (2f) -->
       <a-image id="seqPlane0_e" src="#t5_f0" position="0 0 0.4" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
-      <!-- layer C: t3 (3f) -->
       <a-image id="seqPlane0_c" src="#t3_f0" position="0 0 0.5" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
-      <!-- ✅ NEW layer G: t6 (2f) -->
       <a-image id="seqPlane0_g" src="#t6_f0" position="0 0 0.6" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
-      <!-- ✅ layer F: t0 (3f) -->
       <a-image id="seqPlane0_f" src="#t0_f0" position="0 0 0.7" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
 
-      <!-- layer D: t4 (10f) -->
       <a-image id="seqPlane0_d" src="#t4_f0" position="0 0 0.9" width="1" height="2"
         material="shader:flat; transparent:true; alphaTest:0.01; depthWrite:false" visible="false"></a-image>
     </a-entity>
@@ -379,16 +372,20 @@
     for (let i = 0; i < 11; i++) showThumb(i);
     stopT0Seq();
 
-    // ===== iOS unlock =====
+    // ===== iOS unlock (✅ SOUND ENABLED) =====
     let unlocked = false;
 
     async function unlockVideos() {
       if (unlocked) return;
       unlocked = true;
 
+      // Prime audio under user gesture
       for (const v of videos) {
         if (!v) continue;
         try {
+          v.muted = false;
+          v.volume = 1;
+
           await v.play();
           v.pause();
           v.currentTime = 0;
@@ -439,6 +436,8 @@
         try {
           if (!v) return;
           v.currentTime = 0;
+          v.muted = false;
+          v.volume = 1;
           v.play().catch(() => {});
         } catch (e) {}
       });
